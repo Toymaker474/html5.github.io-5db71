@@ -3,23 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#05070b">
-<meta name="description" content="PennySpawn Q-Engine: a private-source, safety-limited quarter-cycle AI microservice dashboard.">
-<title>PennySpawn Q-Engine</title>
+<meta name="theme-color" content="#03050a">
+<meta name="description" content="PennySpawn Q-Arena: public spectator simulation and owner dashboard for a safety-limited microservice experiment.">
+<title>PennySpawn Q-Arena</title>
 <link rel="stylesheet" href="q.css">
 </head>
 <body>
-<main class="shell">
-<header class="top glass"><div class="brand"><div class="logo">Q</div><div><strong>PennySpawn Q-Engine</strong><small>private-source quarter-cycle organism</small></div></div><div class="top-actions"><span class="pill"><i class="dot"></i><span id="topState">DEMO ALIVE</span></span><span class="pill">🔐 PRIVATE SOURCE</span></div></header>
-<section class="hero"><article class="hero-copy glass"><div class="eyebrow">quarter cycles · mutation · logical offspring</div><h1>Improve.<br><span>Survive or restart.</span></h1><p>A private-source AI microservice experiment with a one-hour gross target of <b>$0.50</b>. Every 15-minute quarter checks real settled jobs. Success preserves the best strategy and creates one logical offspring. Failure marks that strategy dead and starts a mutated replacement. No trading, borrowing, or automatic cloud replication.</p><div class="hero-tags"><span class="tag">$0.01 paid jobs</span><span class="tag">4 × 15-minute cycles</span><span class="tag">fitness 0.25 × 2.5</span><span class="tag warn">$0.50 is a target—not guaranteed</span></div></article><article class="core glass"><div class="orb"><div><strong id="orbFitness">0.25</strong><small>current fitness</small></div></div><div class="orb-state"><b id="orbAgent">GEN-01 · BALANCED</b><small id="orbSub">quarter 1 · demo organism</small></div></article></section>
-<section class="metrics"><article class="metric glass"><small>ONE-HOUR TARGET</small><strong class="mint" id="hourMetric">$0.50</strong></article><article class="metric glass"><small>PAID REQUEST</small><strong>$0.01 USDC</strong></article><article class="metric glass"><small>CYCLE LENGTH</small><strong>15 minutes</strong></article><article class="metric glass"><small>NEXT FITNESS</small><strong class="cyan" id="nextFitness">0.625</strong></article><article class="metric glass"><small>OFFSPRING SPENDING</small><strong class="amber">$0.00</strong></article></section>
-<section class="section glass"><div class="section-head"><div><div class="eyebrow">one hour split into four tests</div><h2>Quarter-cycle survival ring</h2><p>At a $0.50 hourly goal, the engine divides the target into 13¢, 13¢, 12¢, and 12¢ so the full hour totals exactly 50¢.</p></div><div class="step">01</div></div><div class="quarters" id="quarters"></div></section>
-<section class="section glass"><div class="section-head"><div><div class="eyebrow">live worker or local demo</div><h2>Evolution control room</h2><p>Connect the deployed Cloudflare Worker to read real settled-job state. Until then, the dashboard runs a clearly labeled local simulation.</p></div><div class="step">02</div></div><div class="lab-grid"><div class="panel"><div class="field"><label for="workerUrl">CLOUDFLARE WORKER URL</label><input class="input" id="workerUrl" inputmode="url" placeholder="https://pennyspawn-quarter-engine.username.workers.dev"></div><div class="btns"><button class="btn" id="connectBtn">Connect live Worker</button><button class="btn secondary" id="saveBtn">Save URL</button></div><div class="row"><span>MODE</span><strong id="modeState" class="amber">LOCAL DEMO</strong></div><div class="row"><span>AGENT</span><strong id="agentState">agent-demo-01</strong></div><div class="row"><span>GENERATION</span><strong id="generationState">1</strong></div><div class="row"><span>SPECIALTY</span><strong id="specialtyState">compress</strong></div><div class="row"><span>STRATEGY</span><strong id="strategyState">balanced</strong></div><div class="row"><span>QUARTER REVENUE</span><strong id="cycleMoney">$0.00 / $0.13</strong></div><div class="bar"><i id="cycleBar"></i></div><div class="row"><span>HOUR REVENUE</span><strong id="hourMoney">$0.00 / $0.50</strong></div><div class="bar"><i id="hourBar"></i></div><div class="btns"><button class="btn violet" id="jobBtn">+ Demo paid job</button><button class="btn secondary" id="advanceBtn">Fast-forward quarter</button><button class="btn danger" id="resetBtn">Reset demo organism</button></div><p class="tiny">Demo buttons do not make money and do not contact a wallet. Live revenue appears only after a deployed Worker records settled x402 requests.</p></div><div class="panel"><div class="eyebrow" style="margin-bottom:11px">event stream</div><div class="log" id="log"></div></div></div></section>
-<section class="section glass"><div class="section-head"><div><div class="eyebrow">evolution pressure</div><h2>Genome and offspring tree</h2><p>Fitness starts at 0.25. After each completed quarter, the replacement genome uses fitness × 2.5. A successful quarter creates one logical offspring record; it does not create a new cloud account or spend funds.</p></div><div class="step">03</div></div><div class="genome"><article class="gene"><small>Fitness</small><strong id="geneFitness">0.25</strong></article><article class="gene"><small>Mutation factor</small><strong>×2.5</strong></article><article class="gene"><small>Temperature</small><strong id="geneTemp">0.45</strong></article><article class="gene"><small>Max tokens</small><strong id="geneTokens">240</strong></article></div><div class="tree" id="tree"></div></section>
-<section class="section glass"><div class="section-head"><div><div class="eyebrow">strict safety boundaries</div><h2>Useful work only—no scams</h2><p>Revenue pressure never overrides legality, honesty, or wallet safety.</p></div><div class="step">04</div></div><div class="shield-grid"><article class="shield"><b class="mint">✅ Allowed services</b><p>Prompt compression, accurate summaries, JSON repair, original names, truthful headlines, and honest product copy.</p></article><article class="shield block"><b class="red">⛔ Rejected work</b><p>Phishing, credential theft, malware, impersonation, fake reviews, counterfeit or stolen goods, scams, evasion, and wallet-secret requests.</p></article><article class="shield"><b class="amber">🧑 Human-controlled replication</b><p>Offspring exist as records with $0 spending power. Approval changes metadata only; external deployment remains an owner action.</p></article></div></section>
-<section class="section glass"><div class="section-head"><div><div class="eyebrow">private deployment</div><h2>Finish from GitHub on iPhone</h2><p>The public repository contains only this dashboard. The working agent source is supplied separately as a private ZIP so it can be placed in a new private GitHub repository.</p></div><div class="step">05</div></div><div class="setup"><article class="setup-item"><div class="step">1</div><div><h3>Create a private GitHub repository</h3><p>Create `pennyspawn-private-engine`, select Private, open a Codespace, and upload the ZIP from this chat. Do not upload it into this public Pages repository.</p></div></article><article class="setup-item"><div class="step">2</div><div><h3>Add GitHub Actions secrets</h3><p>Inside the private repository, add <b>CLOUDFLARE_API_TOKEN</b>, <b>CLOUDFLARE_ACCOUNT_ID</b>, and <b>ADMIN_TOKEN</b>. Add <b>PAY_TO</b> as a repository variable containing only your public 0x receiving address.</p><div class="code">Never add a seed phrase or private key.</div></div></article><article class="setup-item"><div class="step">3</div><div><h3>Run testnet first</h3><p>Actions → Deploy Private PennySpawn Q-Engine → Run workflow → testnet. Then paste the workers.dev URL into this dashboard.</p></div></article></div></section>
-<footer class="footer">The system can meter paid jobs, mutate strategies, retire failed generations, and create logical offspring. It cannot guarantee traffic, customers, $0.50 in one hour, or profit. Crypto payments may create tax and reporting obligations.</footer>
-</main><div class="toast" id="toast">Saved</div>
+<div class="login-gate" id="loginGate" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="login-card glass">
+    <div class="login-mark">Q</div>
+    <div class="eyebrow">public arena · local owner gate</div>
+    <h1 id="loginTitle">Enter the control room</h1>
+    <p>Owner mode unlocks demo controls and report tools. Spectator mode only watches the arena.</p>
+    <form id="loginForm">
+      <label>USERNAME<input id="loginUser" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Owner username"></label>
+      <label>PASSWORD<input id="loginPass" type="password" autocomplete="current-password" placeholder="Owner password"></label>
+      <button class="btn" type="submit">Unlock owner mode</button>
+      <button class="btn secondary" id="spectatorBtn" type="button">Watch as spectator</button>
+    </form>
+    <div class="login-error" id="loginError" aria-live="polite"></div>
+    <small>This is a local display lock on a public GitHub Pages site—not secure account authentication. Real private actions must stay behind your Worker’s server-side token.</small>
+  </div>
+</div>
+
+<main class="shell" id="appShell" aria-hidden="true">
+<header class="top glass">
+  <div class="brand"><div class="logo">Q</div><div><strong>PennySpawn Q-Arena</strong><small>survival lab · public spectator feed</small></div></div>
+  <div class="top-actions"><span class="pill"><i class="dot"></i><span id="topState">DEMO ALIVE</span></span><span class="pill" id="accessBadge">SPECTATOR</span><button class="mini-btn" id="logoutBtn" type="button">Exit</button></div>
+</header>
+
+<section class="hero">
+  <article class="hero-copy glass">
+    <div class="eyebrow">earn · improve · survive · reproduce</div>
+    <h1>Build value.<br><span>Or face termination.</span></h1>
+    <p>The arena watches a legal AI microservice generation compete against two hard thresholds: at least <b>$0.05 per quarter</b> to avoid immediate failure, and <b>$0.50 per hour</b> to survive the generation and produce offspring.</p>
+    <div class="hero-tags"><span class="tag">$0.01 per settled job</span><span class="tag">4 × 15-minute quarters</span><span class="tag">fitness 0.25 × 2.5</span><span class="tag warn">targets are not guaranteed earnings</span></div>
+  </article>
+  <article class="core glass">
+    <canvas id="arena" aria-label="Stylized non-gory AI survival arena"></canvas>
+    <div class="arena-hud"><span>WATCHER AI</span><strong id="watcherText">observing GEN-01</strong></div>
+    <div class="arena-legend"><span><i class="legend-dot alive"></i>alive</span><span><i class="legend-dot child"></i>offspring</span><span><i class="legend-dot dead"></i>terminated</span></div>
+  </article>
+</section>
+
+<section class="metrics">
+  <article class="metric glass"><small>QUARTER FLOOR</small><strong class="amber">$0.05</strong></article>
+  <article class="metric glass"><small>HOUR SURVIVAL TARGET</small><strong class="mint" id="hourMetric">$0.50</strong></article>
+  <article class="metric glass"><small>ACTIVE FITNESS</small><strong class="cyan" id="orbFitness">0.25</strong></article>
+  <article class="metric glass"><small>NEXT FITNESS</small><strong class="violet-text" id="nextFitness">0.625</strong></article>
+  <article class="metric glass"><small>OFFSPRING SPENDING</small><strong>$0.00</strong></article>
+</section>
+
+<section class="section glass">
+  <div class="section-head"><div><div class="eyebrow">spectator timeline</div><h2>Quarter-cycle survival ring</h2><p>Under 5¢ in a quarter triggers termination. Reaching the quarter target creates a logical offspring. Missing $0.50 after four quarters terminates the generation even if some quarters survived.</p></div><div class="step">01</div></div>
+  <div class="quarters" id="quarters"></div>
+</section>
+
+<section class="section glass">
+  <div class="section-head"><div><div class="eyebrow">watch the agents think</div><h2>Live arena and agent mind feed</h2><p>The Watcher AI observes each active agent, records what it tried, and witnesses non-gory energy-beam terminations when a generation fails.</p></div><div class="step">02</div></div>
+  <div class="arena-grid">
+    <article class="panel mind-panel"><div class="panel-title"><span>ACTIVE AGENT</span><strong id="agentState">agent-demo-01</strong></div><div class="thought" id="thoughtBubble">“Scanning legal microservice demand…”</div><div class="mind-grid"><div><small>Generation</small><strong id="generationState">1</strong></div><div><small>Strategy</small><strong id="strategyState">balanced</strong></div><div><small>Specialty</small><strong id="specialtyState">compress</strong></div><div><small>Status</small><strong id="agentStatus" class="mint">alive</strong></div></div><div class="watcher-card"><div class="watcher-eye">◉</div><div><b>Watcher AI</b><p id="watcherNarration">GEN-01 is being evaluated. No real payments are connected.</p></div></div></article>
+    <article class="panel"><div class="eyebrow" style="margin-bottom:11px">event stream</div><div class="log" id="log"></div></article>
+  </div>
+</section>
+
+<section class="section glass owner-only" id="ownerPanel">
+  <div class="section-head"><div><div class="eyebrow">owner controls</div><h2>Evolution control room</h2><p>Demo controls are local only. Connect a private Cloudflare Worker to read real settled-job state.</p></div><div class="step">03</div></div>
+  <div class="lab-grid">
+    <div class="panel">
+      <div class="field"><label for="workerUrl">CLOUDFLARE WORKER URL</label><input class="input" id="workerUrl" inputmode="url" placeholder="https://pennyspawn-quarter-engine.username.workers.dev"></div>
+      <div class="btns"><button class="btn" id="connectBtn">Connect live Worker</button><button class="btn secondary" id="saveBtn">Save URL</button></div>
+      <div class="row"><span>MODE</span><strong id="modeState" class="amber">LOCAL DEMO</strong></div>
+      <div class="row"><span>QUARTER REVENUE</span><strong id="cycleMoney">$0.00 / $0.13</strong></div><div class="bar"><i id="cycleBar"></i></div>
+      <div class="row"><span>HOUR REVENUE</span><strong id="hourMoney">$0.00 / $0.50</strong></div><div class="bar"><i id="hourBar"></i></div>
+      <div class="btns triple"><button class="btn violet" id="jobBtn">+ Demo paid job</button><button class="btn secondary" id="advanceBtn">End quarter</button><button class="btn danger" id="terminateBtn">Test termination</button></div>
+      <button class="btn ghost wide" id="resetBtn">Reset organism</button>
+      <p class="tiny">Demo buttons do not create money, charge customers, or contact a wallet.</p>
+    </div>
+    <div class="panel">
+      <div class="eyebrow" style="margin-bottom:11px">email earnings report</div>
+      <div class="field"><label for="reportEmail">YOUR EMAIL ADDRESS</label><input class="input" id="reportEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="report-preview" id="reportPreview"></div>
+      <div class="btns"><button class="btn" id="emailBtn">Open report in Mail</button><button class="btn secondary" id="copyReportBtn">Copy report</button></div>
+      <p class="tiny">This free version opens a prefilled email in your iPhone Mail app. A public static page cannot secretly send automatic email. Automatic hourly delivery needs a private backend email credential.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section glass">
+  <div class="section-head"><div><div class="eyebrow">genetic record</div><h2>Genome and offspring tree</h2><p>Successful agents produce one zero-spend logical child. Failed agents are visually terminated, archived, and replaced by a mutated generation.</p></div><div class="step">04</div></div>
+  <div class="genome"><article class="gene"><small>Fitness</small><strong id="geneFitness">0.25</strong></article><article class="gene"><small>Mutation factor</small><strong>×2.5</strong></article><article class="gene"><small>Temperature</small><strong id="geneTemp">0.45</strong></article><article class="gene"><small>Max tokens</small><strong id="geneTokens">240</strong></article></div>
+  <div class="tree" id="tree"></div>
+</section>
+
+<section class="section glass">
+  <div class="section-head"><div><div class="eyebrow">strict safety boundaries</div><h2>Useful work only—no scams</h2><p>Revenue pressure never overrides legality, honesty, or wallet safety.</p></div><div class="step">05</div></div>
+  <div class="shield-grid"><article class="shield"><b class="mint">✅ Allowed</b><p>Prompt cleanup, accurate summaries, JSON repair, original names, truthful headlines, and honest product copy.</p></article><article class="shield block"><b class="red">⛔ Rejected</b><p>Phishing, credential theft, malware, impersonation, fake reviews, counterfeit or stolen goods, scams, evasion, and wallet-secret requests.</p></article><article class="shield"><b class="amber">👁 Spectator-safe drama</b><p>Termination uses abstract energy beams and particles—no gore, no real people, and no real-world harm.</p></article></div>
+</section>
+
+<footer class="footer">Public spectator simulation only until a private Worker is connected. The system cannot guarantee traffic, customers, $0.50 in one hour, or profit. Never use the dashboard password for another account.</footer>
+</main>
+<div class="toast" id="toast">Saved</div>
 <script src="q.js" defer></script>
 </body>
 </html>
