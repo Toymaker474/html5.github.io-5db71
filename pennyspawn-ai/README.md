@@ -1,32 +1,38 @@
-# PennySpawn Neo
+# PennySpawn Forge v6
 
-PennySpawn Neo is a public iPhone-first GitHub Pages PWA with:
+PennySpawn Forge is an iPhone-first GitHub Pages PWA that combines:
 
-- polished local owner login and local profile registration;
-- a pre-seeded owner profile migration for `tyleroy69`;
-- watch-only Base USDC and Bitcoin monitoring;
-- confirmed positive-balance-delta receipt accounting;
-- BTC, ETH, and SOL public spot-price cards;
-- a read-only conversion calculator with no trade execution;
-- external launch links for open-source non-custodial iPhone wallets;
-- local SmolLM2 or optional Qwen2.5 planning with MiniLM ranking;
-- 2–60 minute legal strategy cycles;
-- animated agent retirement and zero-spend offspring records;
-- no seed phrases, private keys, custody, automatic trading, fake revenue, spam, scams, or guaranteed-income claims.
+- visitor-side open-source AI tools;
+- WebGPU acceleration with quantized WASM/CPU fallback;
+- device-local owner profiles;
+- watch-only Base USDC and Bitcoin telemetry;
+- real public-wallet receipt detection;
+- a lawful local strategy agent;
+- an AdSense-ready adapter with visitor opt-in;
+- public sponsor and crypto-tip buttons.
 
-## Owner login
+## Monetization setup
 
-The public app contains a client-side PBKDF2 verifier for the owner credentials previously supplied by the repository owner. This is only a local display lock. It must not protect money, private keys, email, GitHub, or other important accounts.
+Edit `monetization-config.js` and add only public identifiers:
 
-## Wallet and exchange boundary
+- AdSense publisher ID and approved ad-unit slot IDs;
+- public Base USDC receiving address;
+- public Bitcoin receiving address;
+- sponsor inquiry URL.
 
-The app is watch-only. It does not create, custody, sign, send, swap, buy, or sell assets. The Market Calculator is a price preview. Wallet links open external applications.
+Never place seed phrases, private keys, exchange passwords, wallet signing credentials, or OAuth tokens in this repository.
 
-## Data sources
+AdSense will not show ads until the site is added to the publisher account, reviewed, approved, and the correct code/IDs are present. The app does not estimate or fabricate ad earnings.
 
-- Base JSON-RPC for public USDC balances.
-- Circle's Base USDC contract address.
-- mempool.space REST API for public Bitcoin address balances.
-- Coinbase public spot-price endpoints for BTC, ETH, and SOL.
+## Compute model
 
-Public endpoints may rate-limit or become unavailable. The UI reports those failures instead of inventing data.
+Visitors perform inference on their own device through Transformers.js:
+
+- `HuggingFaceTB/SmolLM2-135M-Instruct` in Lite mode;
+- `onnx-community/Qwen2.5-0.5B-Instruct` in Deep mode;
+- WebGPU `q4` first when supported;
+- WASM `q4`/`q8` fallback.
+
+## Static-site limits
+
+GitHub Pages cannot securely store secrets, process custodial payments, run permanent background agents, or guarantee visitors and income. PennySpawn therefore uses public wallet telemetry, local inference, approved advertising scripts, and human-reviewed actions.

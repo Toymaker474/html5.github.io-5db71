@@ -1,14 +1,12 @@
 {
-  "name": "PennySpawn Neo",
-  "short_name": "PennySpawn",
-  "description": "iPhone-first local AI strategy lab with watch-only Base USDC and Bitcoin telemetry.",
-  "start_url": "./?v=5",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#05070d",
-  "theme_color": "#05070d",
-  "icons": [
-    {"src":"icon.svg?v=5","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
-  ]
+  "name":"PennySpawn Forge",
+  "short_name":"PennySpawn",
+  "description":"Local open-source AI tools, watch-only crypto telemetry, and honest static-site monetization.",
+  "start_url":"./?v=6",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"portrait-primary",
+  "background_color":"#05070d",
+  "theme_color":"#05070d",
+  "icons":[{"src":"icon.svg?v=6","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }

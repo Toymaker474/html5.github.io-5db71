@@ -1,26 +1,5 @@
-const CACHE = 'pennyspawn-neo-v5';
-const SHELL = ['./', 'index.html?v=5', 'q.css?v=5', 'q.js?v=5', 'model-worker.js?v=5', 'app.webmanifest?v=5', 'icon.svg?v=5'];
-
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
-});
-
-self.addEventListener('fetch', event => {
-  const request = event.request;
-  if (request.method !== 'GET') return;
-  const url = new URL(request.url);
-  if (url.origin !== location.origin) return;
-  event.respondWith(
-    fetch(request, { cache: 'no-store' })
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE).then(cache => cache.put(request, copy));
-        return response;
-      })
-      .catch(() => caches.match(request).then(hit => hit || caches.match('./')))
-  );
-});
+const CACHE='pennyspawn-forge-v6';
+const SHELL=['./?v=6','index.html','q.css?v=6','q.js?v=6','state.js','runtime.js','ui.js','model-worker.js?v=6','monetization-config.js?v=6','app.webmanifest?v=6','icon.svg?v=6'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.origin!==location.origin)return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request).then(x=>x||caches.match('./?v=6'))))});

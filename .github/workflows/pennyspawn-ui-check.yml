@@ -25,14 +25,22 @@ jobs:
       - name: Check browser JavaScript
         run: |
           node --check pennyspawn-ai/q.js
+          node --check pennyspawn-ai/state.js
+          node --check pennyspawn-ai/runtime.js
+          node --check pennyspawn-ai/ui.js
           node --check pennyspawn-ai/model-worker.js
+          node --check pennyspawn-ai/monetization-config.js
           node --check pennyspawn-ai/sw.js
       - name: Confirm required PWA files
         run: |
           test -s pennyspawn-ai/index.html
           test -s pennyspawn-ai/q.css
           test -s pennyspawn-ai/q.js
+          test -s pennyspawn-ai/state.js
+          test -s pennyspawn-ai/runtime.js
+          test -s pennyspawn-ai/ui.js
           test -s pennyspawn-ai/model-worker.js
+          test -s pennyspawn-ai/monetization-config.js
           test -s pennyspawn-ai/app.webmanifest
           test -s pennyspawn-ai/sw.js
           test -s pennyspawn-ai/icon.svg
