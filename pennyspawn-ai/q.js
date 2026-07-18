@@ -1,7 +1,7 @@
 (async()=>{
   const{bootStability}=await import('./stability-ui.js?v=8');
   await bootStability();
-  const{app}=await import('./state.js?v=8');
+  const{app}=await import('./state.js');
   const{render,bootUI}=await import('./ui.js?v=8');
   app.render=render;
   bootUI();
