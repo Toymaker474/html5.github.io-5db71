@@ -23,13 +23,16 @@ export type SwarmResult = {
 export const MODES: Mode[] = ["compress", "summary", "listing", "names", "json"];
 
 export const AGENTS = [
-  { id: "shield", name: "Shield", emoji: "🛡️", role: "Blocks obvious scams, fraud, malware, theft, evasion, and wallet-secret requests.", spendingPower: "$0" },
-  { id: "scout", name: "Scout", emoji: "🧭", role: "Routes each request to the smallest suitable specialist.", spendingPower: "$0" },
+  { id: "shield", name: "Shield", emoji: "🛡️", role: "Rejects obvious fraud, phishing, malware, theft, evasion, and wallet-secret requests.", spendingPower: "$0" },
+  { id: "scout", name: "Scout", emoji: "🧭", role: "Classifies the job and selects the smallest useful route.", spendingPower: "$0" },
   { id: "flash", name: "Flash", emoji: "⚡", role: "Runs deterministic low-latency transformations without model inference.", spendingPower: "$0" },
-  { id: "forge", name: "Forge", emoji: "🧠", role: "Uses Workers AI for higher-quality text work when quality mode is selected.", spendingPower: "$0" },
-  { id: "judge", name: "Judge", emoji: "✅", role: "Checks non-empty output, JSON validity, unsupported claims, and basic format.", spendingPower: "$0" },
-  { id: "ledger", name: "Ledger", emoji: "🪙", role: "Records completed jobs and reads public payment configuration; it never holds a key.", spendingPower: "$0" },
-  { id: "spawn", name: "Spawn", emoji: "🧬", role: "Proposes a specialized child configuration after the threshold; humans must deploy it.", spendingPower: "$0" },
+  { id: "forge", name: "Forge", emoji: "🧠", role: "Uses Workers AI for higher-quality text work when the active genome selects it.", spendingPower: "$0" },
+  { id: "judge", name: "Judge", emoji: "✅", role: "Checks output presence, JSON validity, and unsupported income claims.", spendingPower: "$0" },
+  { id: "wallet", name: "Wallet", emoji: "👛", role: "Exposes only the public receiving address; it never stores or signs with a private key.", spendingPower: "$0" },
+  { id: "ledger", name: "Ledger", emoji: "🪙", role: "Counts fulfilled paid jobs and estimates gross receipts from the configured price.", spendingPower: "$0" },
+  { id: "darwin", name: "Darwin", emoji: "🧬", role: "Mutates route strategy, specialty, token budget, and temperature between generations.", spendingPower: "$0" },
+  { id: "reaper", name: "Reaper", emoji: "💀", role: "Retires a stalled strategy after the configured observation window.", spendingPower: "$0" },
+  { id: "seed", name: "Seed", emoji: "🌱", role: "Starts the next in-place generation; it cannot create accounts or infrastructure.", spendingPower: "$0" },
 ] as const;
 
 const BLOCKED_PATTERNS: Array<{ pattern: RegExp; reason: string }> = [

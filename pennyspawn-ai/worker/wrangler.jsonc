@@ -13,13 +13,19 @@
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["StatsObject"] }
   ],
+  "triggers": {
+    "crons": ["0 * * * *"]
+  },
   "vars": {
     "PAY_TO": "REPLACE_WITH_PUBLIC_0X_WALLET",
-    "X402_PRICE": "$0.01",
+    "X402_PRICE": "$0.0001",
     "X402_NETWORK": "eip155:84532",
     "X402_FACILITATOR_URL": "https://x402.org/facilitator",
-    "CLONE_THRESHOLD_JOBS": "100",
     "AI_MODEL": "@cf/meta/llama-3.2-1b-instruct",
+    "GENERATION_STALL_HOURS": "24",
+    "GENERATION_COLD_START_HOURS": "72",
+    "GENERATION_MAX_AGE_HOURS": "168",
+    "GENERATION_TARGET_GROSS_USD": "0.001",
     "GUI_URL": "https://toymaker474.github.io/html5.github.io/pennyspawn-ai/"
   },
   "limits": { "cpu_ms": 20 },

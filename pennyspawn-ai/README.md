@@ -1,48 +1,59 @@
-# 🧬 PennySpawn Agent Swarm
+# 🧬 PennySpawn Evolution Engine
 
-PennySpawn is an honest, open-source starter for a **$0.01 USDC text microservice** with seven controlled software-agent roles:
+PennySpawn is an open-source experiment that sells tiny lawful text jobs through x402 and evolves its **strategy configuration** when a generation stops earning.
 
-- **Shield** blocks obvious scams, phishing, fraud, malware, theft, evasion, fake reviews, impersonation, counterfeit/stolen-goods work, and wallet-secret requests.
-- **Scout** routes each task.
-- **Flash** performs deterministic low-latency work without model inference.
-- **Forge** uses Cloudflare Workers AI for higher-quality work.
-- **Judge** validates output format and basic honesty constraints.
-- **Ledger** records completed jobs and an estimated gross total; it never holds a private key.
-- **Spawn** proposes a specialized child after the threshold; it cannot deploy itself.
-
-## Important truth
-
-`$0.01` means **one cent**. `0.01 cent` would be `$0.0001`.
-
-Warm deterministic code may sometimes execute internally near one millisecond, but a real paid request also requires mobile-network transit, internet routing, wallet signing, and payment settlement. **End-to-end one-millisecond payment cannot be guaranteed.**
-
-This code can accept payments after owner configuration. It cannot create money from nothing and cannot guarantee customers, traffic, revenue, income, or profit.
-
-## Free-tier architecture
-
-| Part | Service | Purpose |
-|---|---|---|
-| GUI | GitHub Pages | iPhone dashboard, free local demo, agent trace |
-| API | Cloudflare Workers | Hono API and x402 middleware |
-| Fast route | Deterministic agent path | Low-latency transformations without model inference |
-| Quality route | Cloudflare Workers AI | Higher-quality AI transformation |
-| Stats | SQLite Durable Object | Job, route, mode, and gross-estimate counters |
-| Payment | x402 / USDC | Pay-per-request challenge and settlement |
-
-Free tiers have usage limits. The project does not promise unlimited free hosting or inference.
-
-## Routes
+The default paid price is:
 
 ```text
-GET  /
-GET  /health
-GET  /api/info
-GET  /api/agents
-POST /api/demo
-POST /api/demo/swarm
-POST /api/instant            # x402 protected, deterministic fast path
-POST /api/forge              # x402 protected, Workers AI quality path
-GET  /api/admin/clone-plan   # Bearer ADMIN_TOKEN
+0.01 cent = $0.0001
+```
+
+This is not the same as `$0.01`, which is one full cent.
+
+## What the agents do
+
+- **Shield** rejects obvious fraud, phishing, malware, theft, evasion, fake-review work, impersonation, counterfeit/stolen-goods work, and wallet-secret requests.
+- **Scout** selects the smallest useful route.
+- **Flash** runs deterministic low-latency transformations.
+- **Forge** uses Cloudflare Workers AI for higher-quality work.
+- **Judge** checks output presence, JSON validity, and unsupported income claims.
+- **Wallet** exposes only the configured public receiving address.
+- **Ledger** counts fulfilled paid jobs and estimates gross receipts.
+- **Darwin** mutates strategy, specialty, token budget, temperature, and route policy.
+- **Reaper** retires a stalled generation.
+- **Seed** activates the next generation inside the same Worker.
+
+Every agent has `$0` spending authority. The Worker stores no seed phrase or private key.
+
+## Evolution lifecycle
+
+The Worker runs an hourly scheduled evaluation:
+
+```text
+paid request arrives
+→ fulfill the requested microservice
+→ record estimated gross receipts
+→ keep the generation alive while sales continue
+→ retire it after the configured stall window
+→ mutate the genome
+→ start the next in-place generation
+```
+
+Default retirement rules:
+
+- zero paid jobs for 72 hours after birth;
+- no new paid job for 24 hours after a previous sale;
+- below `$0.001` generation gross after 168 hours;
+- or an authenticated owner forces evolution.
+
+“Kill” means **retire the current strategy record**. It does not delete the Worker, destroy a wallet, create a new account, or deploy uncontrolled copies.
+
+## Paid routes
+
+```text
+POST /api/earn      # active genome selects instant or quality
+POST /api/instant   # deterministic path
+POST /api/forge     # Workers AI path
 ```
 
 Request body:
@@ -54,9 +65,41 @@ Request body:
 }
 ```
 
-Modes: `compress`, `summary`, `listing`, `names`, `json`.
+Available modes:
 
-Responses report `internalProcessingMs` separately from network and payment time. The number must not be marketed as end-to-end latency.
+```text
+compress
+summary
+listing
+names
+json
+```
+
+Requests are validated and safety-checked before the payment middleware. A compatible x402 buyer must still discover the endpoint and pay it. Customers, demand, revenue, and profit are never guaranteed.
+
+## Public status routes
+
+```text
+GET /health
+GET /api/info
+GET /api/agents
+GET /api/catalog
+GET /api/wallet
+GET /api/evolution
+POST /api/demo
+```
+
+`/api/wallet` reports the public receive-only address and a job-ledger gross estimate. It does not query or claim the actual on-chain balance.
+
+## Owner routes
+
+```text
+POST /api/admin/evaluate
+POST /api/admin/evolve
+Authorization: Bearer ADMIN_TOKEN
+```
+
+The admin token must remain a GitHub/Cloudflare secret and must never be entered into the public web dashboard.
 
 ## iPhone deployment
 
@@ -67,33 +110,24 @@ Responses report `internalProcessingMs` separately from network and payment time
    - `CLOUDFLARE_ACCOUNT_ID`
    - `ADMIN_TOKEN`
 4. Add repository variable:
-   - `PAY_TO` = your **public** Base-compatible `0x...` receiving address.
+   - `PAY_TO` = your public Base-compatible `0x...` receiving address.
 5. Open **Actions → Deploy PennySpawn Worker → Run workflow**.
 6. Select `testnet` first.
+7. Test the payment challenge, result delivery, wallet address, and evolution status.
 
-Never add a seed phrase, recovery phrase, private key, password, or wallet signing credential to GitHub or the web dashboard.
+Never commit or paste a seed phrase, recovery phrase, private key, password, or wallet signing credential.
 
-## Clone behavior
+## Mainnet warning
 
-A clone is only a configuration proposal based on the most-used mode and route. It has:
+Mainnet is manual. Real cryptocurrency may involve taxes, reporting duties, fees, platform rules, and loss risk. The receive-only architecture reduces risk but does not remove it.
 
-- `$0` spending power;
-- no wallet-creation authority;
-- no trading or borrowing authority;
-- no account-creation authority;
-- mandatory human deployment approval.
-
-## Mainnet
-
-Mainnet is intentionally manual. Test the payment challenge and result delivery on Base Sepolia first. Real cryptocurrency may involve fees, taxes, reporting requirements, and platform rules.
-
-## Local development
+## Local checks
 
 ```bash
 cd pennyspawn-ai/worker
 npm install
 npm run check
-npm run dev
+npx wrangler deploy --dry-run
 ```
 
 ## License
