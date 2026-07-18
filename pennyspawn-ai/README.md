@@ -1,4 +1,4 @@
-# PennySpawn Forge v6
+# PennySpawn Forge v7
 
 PennySpawn Forge is an iPhone-first GitHub Pages PWA that combines:
 
@@ -10,6 +10,21 @@ PennySpawn Forge is an iPhone-first GitHub Pages PWA that combines:
 - a lawful local strategy agent;
 - an AdSense-ready adapter with visitor opt-in;
 - public sponsor and crypto-tip buttons.
+
+## Base RPC — easiest free setup
+
+Open **Settings → Base RPC connection → Auto-pick fastest**.
+
+PennySpawn tests both official Base endpoints and selects the healthiest one:
+
+- Standard: `https://mainnet.base.org`
+- Flashblocks: `https://mainnet-preconf.base.org`
+
+These endpoints are free and require no account or API key. Base documents them as rate-limited and not intended for heavy production traffic. The control center includes a live chain-ID check, block-height check, latency result, copy button, and automatic recovery between the two free endpoints.
+
+Use **Custom provider** only when you need a higher request allowance from a service such as Coinbase Developer Platform, Alchemy, QuickNode, or another Base-compatible HTTPS RPC provider.
+
+Never paste a wallet seed phrase, private key, exchange password, or signing credential into an RPC field.
 
 ## Monetization setup
 
