@@ -1,54 +1,32 @@
-# 🧬 PennySpawn Local — GitHub Pages PWA
+# PennySpawn Neo
 
-PennySpawn Local is a static, iPhone-first web app that runs a compact open model in the browser and monitors a **public Base USDC wallet**. It has no Cloudflare Worker, no private backend, no wallet signing authority, and no simulated earnings.
+PennySpawn Neo is a public iPhone-first GitHub Pages PWA with:
 
-## What is real
+- polished local owner login and local profile registration;
+- a pre-seeded owner profile migration for `tyleroy69`;
+- watch-only Base USDC and Bitcoin monitoring;
+- confirmed positive-balance-delta receipt accounting;
+- BTC, ETH, and SOL public spot-price cards;
+- a read-only conversion calculator with no trade execution;
+- external launch links for open-source non-custodial iPhone wallets;
+- local SmolLM2 or optional Qwen2.5 planning with MiniLM ranking;
+- 2–60 minute legal strategy cycles;
+- animated agent retirement and zero-spend offspring records;
+- no seed phrases, private keys, custody, automatic trading, fake revenue, spam, scams, or guaranteed-income claims.
 
-- Base USDC balance is read through Ethereum JSON-RPC using `eth_call` against the official USDC contract.
-- Incoming balance changes are counted only after the RPC reports them.
-- The balance animation updates every frame but interpolates only between confirmed values.
-- SmolLM2-135M-Instruct and MiniLM-L6 download to the browser through Transformers.js.
-- Registration and login are local to the current device using PBKDF2 password hashing.
+## Owner login
 
-## What is not possible on GitHub Pages
+The public app contains a client-side PBKDF2 verifier for the owner credentials previously supplied by the repository owner. This is only a local display lock. It must not protect money, private keys, email, GitHub, or other important accounts.
 
-GitHub Pages is static hosting. It cannot safely run a secret commercial backend, send autonomous transactions, store private wallet credentials, guarantee customers, or keep JavaScript running after iOS suspends the app.
+## Wallet and exchange boundary
 
-The agent therefore:
+The app is watch-only. It does not create, custody, sign, send, swap, buy, or sell assets. The Market Calculator is a price preview. Wallet links open external applications.
 
-1. observes public wallet balance changes;
-2. proposes lawful microservice strategies locally;
-3. asks the human to review and perform the next action;
-4. retires a strategy after a zero-receipt cycle;
-5. creates an offspring plan after a positive confirmed receipt.
+## Data sources
 
-“Death” means retiring a local strategy record. It does not harm a person, destroy funds, delete a wallet, or create uncontrolled copies.
+- Base JSON-RPC for public USDC balances.
+- Circle's Base USDC contract address.
+- mempool.space REST API for public Bitcoin address balances.
+- Coinbase public spot-price endpoints for BTC, ETH, and SOL.
 
-## Open models
-
-- `HuggingFaceTB/SmolLM2-135M-Instruct` — Apache-2.0 text-generation model.
-- `Xenova/all-MiniLM-L6-v2` — local embedding/ranking model.
-- `@huggingface/transformers` — browser inference through ONNX Runtime, WebGPU when available and WASM fallback.
-
-Model files are fetched from Hugging Face on first use and may be cached by the browser. The first download can be large and iOS may evict cached files later.
-
-## Base wallet telemetry
-
-- Network: Base Mainnet, chain ID 8453.
-- Default RPC: `https://mainnet.base.org`.
-- USDC contract: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`.
-- Poll interval: 3 seconds to reduce pressure on the public rate-limited RPC.
-
-Only enter a public `0x...` receiving address. Never enter a seed phrase, recovery phrase, or private key.
-
-## Safety boundary
-
-The local planner blocks or refuses plans involving scams, fraud, phishing, malware, credential theft, impersonation, fake reviews, counterfeit or stolen goods, evasion, spam campaigns, private wallet credentials, or guaranteed-profit claims.
-
-## Files
-
-- `index.html` — interface and local account forms.
-- `q.css` — iOS-style responsive visual system.
-- `q.js` — account storage, wallet polling, cycles, charts, and arena.
-- `model-worker.js` — on-device model loading and planning.
-- `app.webmanifest`, `sw.js`, `icon.svg` — installable PWA shell.
+Public endpoints may rate-limit or become unavailable. The UI reports those failures instead of inventing data.
