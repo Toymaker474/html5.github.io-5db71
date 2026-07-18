@@ -19,13 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Confirm private agent source is absent
+      - name: Confirm private server source is absent
         shell: bash
         run: test -z "$(git ls-files 'pennyspawn-ai/worker/**')"
-      - name: Check dashboard JavaScript
-        run: node --check pennyspawn-ai/q.js
-      - name: Confirm required dashboard files
+      - name: Check browser JavaScript
+        run: |
+          node --check pennyspawn-ai/q.js
+          node --check pennyspawn-ai/model-worker.js
+          node --check pennyspawn-ai/sw.js
+      - name: Confirm required PWA files
         run: |
           test -s pennyspawn-ai/index.html
           test -s pennyspawn-ai/q.css
           test -s pennyspawn-ai/q.js
+          test -s pennyspawn-ai/model-worker.js
+          test -s pennyspawn-ai/app.webmanifest
+          test -s pennyspawn-ai/sw.js
+          test -s pennyspawn-ai/icon.svg

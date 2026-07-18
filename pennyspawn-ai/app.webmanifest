@@ -1,7 +1,7 @@
 {
-  "name": "PennySpawn Q-Arena Live",
-  "short_name": "Q-Arena",
-  "description": "Live-only control room and spectator dashboard for a private x402 AI microservice engine.",
+  "name": "PennySpawn Local",
+  "short_name": "PennySpawn",
+  "description": "On-device open-model strategy lab with verified Base USDC wallet telemetry.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

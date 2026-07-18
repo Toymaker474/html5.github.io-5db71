@@ -1,72 +1,54 @@
-# 🧬 PennySpawn Q-Arena — Live Public PWA
+# 🧬 PennySpawn Local — GitHub Pages PWA
 
-This folder contains the **public iPhone-friendly spectator arena and owner dashboard only**. The active agent and payment Worker must remain in a separate **private GitHub repository**.
+PennySpawn Local is a static, iPhone-first web app that runs a compact open model in the browser and monitors a **public Base USDC wallet**. It has no Cloudflare Worker, no private backend, no wallet signing authority, and no simulated earnings.
 
-## Live-only behavior
+## What is real
 
-- No fake earnings.
-- No local “paid job” button.
-- No simulated revenue.
-- The dashboard stays offline until a private Worker responds at `/api/public/status`.
-- Every displayed dollar must come from the Worker’s settled x402 ledger.
-- A failed Worker lifecycle transition triggers the non-gory termination animation.
+- Base USDC balance is read through Ethereum JSON-RPC using `eth_call` against the official USDC contract.
+- Incoming balance changes are counted only after the RPC reports them.
+- The balance animation updates every frame but interpolates only between confirmed values.
+- SmolLM2-135M-Instruct and MiniLM-L6 download to the browser through Transformers.js.
+- Registration and login are local to the current device using PBKDF2 password hashing.
 
-## Survival target
+## What is not possible on GitHub Pages
 
-The default objective is one settled one-cent job per second:
+GitHub Pages is static hosting. It cannot safely run a secret commercial backend, send autonomous transactions, store private wallet credentials, guarantee customers, or keep JavaScript running after iOS suspends the app.
 
-```text
-$0.01 × 1 job/second
-= $0.60 per minute
-= $6.00 per 10-minute cycle
-= $36.00 per hour
-```
+The agent therefore:
 
-This is a target, not guaranteed income. Software cannot create customers or promise profit.
+1. observes public wallet balance changes;
+2. proposes lawful microservice strategies locally;
+3. asks the human to review and perform the next action;
+4. retires a strategy after a zero-receipt cycle;
+5. creates an offspring plan after a positive confirmed receipt.
 
-## Owner settings
+“Death” means retiring a local strategy record. It does not harm a person, destroy funds, delete a wallet, or create uncontrolled copies.
 
-The public control room can call private Worker endpoints with a session-only bearer token:
+## Open models
 
-```text
-POST /api/admin/settings
-POST /api/admin/evaluate
-POST /api/admin/email-report
-```
+- `HuggingFaceTB/SmolLM2-135M-Instruct` — Apache-2.0 text-generation model.
+- `Xenova/all-MiniLM-L6-v2` — local embedding/ranking model.
+- `@huggingface/transformers` — browser inference through ONNX Runtime, WebGPU when available and WASM fallback.
 
-Supported settings:
+Model files are fetched from Hugging Face on first use and may be cached by the browser. The first download can be large and iOS may evict cached files later.
 
-- cycle duration from 2 to 60 minutes;
-- target cents per second;
-- model policy: `auto`, `instant`, `fast`, or `smart`;
-- verified report sender and destination.
+## Base wallet telemetry
 
-The admin token is not stored by the page. Never use a wallet seed phrase or private key as an admin token.
+- Network: Base Mainnet, chain ID 8453.
+- Default RPC: `https://mainnet.base.org`.
+- USDC contract: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`.
+- Poll interval: 3 seconds to reduce pressure on the public rate-limited RPC.
 
-## Open-model router
+Only enter a public `0x...` receiving address. Never enter a seed phrase, recovery phrase, or private key.
 
-The intended private Worker uses three routes:
+## Safety boundary
 
-1. **Instant deterministic code** for JSON cleanup, validation, formatting, and basic compression.
-2. **GLM-4.7-Flash** for fast open-model language work.
-3. **Gemma 4** for higher-quality open-model work.
+The local planner blocks or refuses plans involving scams, fraud, phishing, malware, credential theft, impersonation, fake reviews, counterfeit or stolen goods, evasion, spam campaigns, private wallet credentials, or guaranteed-profit claims.
 
-Using instant code for simple tasks is essential because a free model quota cannot realistically process one large-model request every second.
+## Files
 
-## iPhone PWA
-
-The dashboard includes:
-
-- `app.webmanifest`;
-- `sw.js` for shell caching;
-- safe-area and full-screen mobile styling;
-- an install action for Add to Home Screen;
-- a shareable spectator URL using `?worker=https://...`.
-
-## Login warning
-
-The username/password gate on a public static page is only a display lock. Real security must be enforced by the private Worker through `ADMIN_TOKEN` and server-side authorization.
-
-## Source privacy warning
-
-Older commits in this repository may still contain prototype Worker code. Deleting files from the latest branch does not erase Git history. Keep the production Worker in a fresh private repository.
+- `index.html` — interface and local account forms.
+- `q.css` — iOS-style responsive visual system.
+- `q.js` — account storage, wallet polling, cycles, charts, and arena.
+- `model-worker.js` — on-device model loading and planning.
+- `app.webmanifest`, `sw.js`, `icon.svg` — installable PWA shell.
