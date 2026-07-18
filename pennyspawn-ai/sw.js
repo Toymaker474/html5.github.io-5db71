@@ -4,7 +4,7 @@ const CORE=[
   './index.html',
   './q.css?v=6',
   './q.js?v=6',
-  './state.js?v=8',
+  './state.js',
   './runtime.js',
   './ui.js?v=8',
   './stability-ui.js?v=8',
