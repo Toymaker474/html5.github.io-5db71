@@ -1,1 +1,14 @@
-(async()=>{const{app}=await import('./state.js');const{render,bootUI}=await import('./ui.js?v=7');app.render=render;bootUI();const{bootRpcUI}=await import('./rpc-ui.js?v=7');bootRpcUI()})().catch(error=>{console.error(error);document.body.innerHTML='<main style="padding:24px;color:white;background:#05070d;min-height:100vh;font-family:-apple-system"><h1>PennySpawn could not start</h1><p>Refresh the page or remove the old Home Screen app and reinstall version 7.</p></main>'});
+(async()=>{
+  const{bootStability}=await import('./stability-ui.js?v=8');
+  await bootStability();
+  const{app}=await import('./state.js?v=8');
+  const{render,bootUI}=await import('./ui.js?v=8');
+  app.render=render;
+  bootUI();
+  const{bootRpcUI}=await import('./rpc-ui.js?v=8');
+  bootRpcUI();
+})().catch(error=>{
+  console.error(error);
+  if(window.PS_RENDER_SAFE_CRASH)window.PS_RENDER_SAFE_CRASH(error);
+  else document.body.innerHTML='<main style="padding:24px;color:white;background:#05070d;min-height:100vh;font-family:-apple-system"><h1>PennySpawn Safe Recovery</h1><p>Refresh once. Heavy local AI is now disabled during startup.</p></main>';
+});
