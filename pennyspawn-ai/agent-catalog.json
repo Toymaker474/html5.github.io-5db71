@@ -1,0 +1,17 @@
+{
+  "schema": "pennyspawn-agent-catalog/v1",
+  "name": "PennySpawn Revenue Lab",
+  "commercial_host_required": true,
+  "custody": false,
+  "automatic_outreach": false,
+  "guaranteed_income": false,
+  "services": [
+    {"id":"json-repair","title":"JSON Repair Sprint","suggested_price_usd":5,"delivery":"Human-reviewed valid JSON and notes"},
+    {"id":"prompt-compression","title":"Prompt Compression Pack","suggested_price_usd":5,"delivery":"Compact structured prompt and checklist"},
+    {"id":"listing-cleanup","title":"Honest Listing Cleanup","suggested_price_usd":5,"delivery":"Factual title, description, and bullets"},
+    {"id":"name-forge","title":"Original Name Forge","suggested_price_usd":5,"delivery":"Original names, shortlist, and taglines"},
+    {"id":"notes-summary","title":"Fast Notes Summary","suggested_price_usd":5,"delivery":"Summary, actions, and open questions"},
+    {"id":"html5-plan","title":"HTML5 Prototype Plan","suggested_price_usd":10,"delivery":"Feature scope, UI flow, and technical checklist"}
+  ],
+  "safety": ["no spam","no fraud","no phishing","no fake reviews","no private keys","no automatic transactions"]
+}
