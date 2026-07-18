@@ -1,53 +1,33 @@
-# PennySpawn Forge v7
+# PennySpawn Revenue Lab v7
 
-PennySpawn Forge is an iPhone-first GitHub Pages PWA that combines:
+PennySpawn is an iPhone-first PWA with zero-download deterministic agents, local device profiles, watch-only Base USDC and Bitcoin telemetry, shareable service offers, and direct-to-wallet invoice text.
 
-- visitor-side open-source AI tools;
-- WebGPU acceleration with quantized WASM/CPU fallback;
-- device-local owner profiles;
-- watch-only Base USDC and Bitcoin telemetry;
-- real public-wallet receipt detection;
-- a lawful local strategy agent;
-- an AdSense-ready adapter with visitor opt-in;
-- public sponsor and crypto-tip buttons.
+## Hosting modes
 
-## Base RPC — easiest free setup
+### GitHub Pages preview
 
-Open **Settings → Base RPC connection → Auto-pick fastest**.
+GitHub Pages is used only as a free non-commercial preview. The application automatically disables ads and real invoice payment requests on `*.github.io`.
 
-PennySpawn tests both official Base endpoints and selects the healthiest one:
+### Commercial deployment
 
-- Standard: `https://mainnet.base.org`
-- Flashblocks: `https://mainnet-preconf.base.org`
+Deploy the same repository to Netlify or another host whose terms allow commercial sites. Then configure approved public AdSense IDs and public receiving addresses in `monetization-config.js`.
 
-These endpoints are free and require no account or API key. Base documents them as rate-limited and not intended for heavy production traffic. The control center includes a live chain-ID check, block-height check, latency result, copy button, and automatic recovery between the two free endpoints.
+## No model download
 
-Use **Custom provider** only when you need a higher request allowance from a service such as Coinbase Developer Platform, Alchemy, QuickNode, or another Base-compatible HTTPS RPC provider.
+Version 7 does not download an LLM. Offer selection and lifecycle planning run as open deterministic JavaScript on the visitor's device.
 
-Never paste a wallet seed phrase, private key, exchange password, or signing credential into an RPC field.
+## Monetization rules
 
-## Monetization setup
+- Normal approved ads only.
+- Never click your own ads.
+- Never pay cash, cryptocurrency, or transferable rewards for ad views.
+- Never use bots, auto-refresh, paid-to-click, traffic exchanges, or deceptive placements.
+- Ad revenue is never displayed unless it can be verified by the ad provider.
 
-Edit `monetization-config.js` and add only public identifiers:
+## Funds and invoices
 
-- AdSense publisher ID and approved ad-unit slot IDs;
-- public Base USDC receiving address;
-- public Bitcoin receiving address;
-- sponsor inquiry URL.
+PennySpawn cannot hold funds. It stores no seed phrase or private key. Invoices contain a public payment destination; sats or USDC go directly to the owner's external wallet.
 
-Never place seed phrases, private keys, exchange passwords, wallet signing credentials, or OAuth tokens in this repository.
+## Safety
 
-AdSense will not show ads until the site is added to the publisher account, reviewed, approved, and the correct code/IDs are present. The app does not estimate or fabricate ad earnings.
-
-## Compute model
-
-Visitors perform inference on their own device through Transformers.js:
-
-- `HuggingFaceTB/SmolLM2-135M-Instruct` in Lite mode;
-- `onnx-community/Qwen2.5-0.5B-Instruct` in Deep mode;
-- WebGPU `q4` first when supported;
-- WASM `q4`/`q8` fallback.
-
-## Static-site limits
-
-GitHub Pages cannot securely store secrets, process custodial payments, run permanent background agents, or guarantee visitors and income. PennySpawn therefore uses public wallet telemetry, local inference, approved advertising scripts, and human-reviewed actions.
+No fraud, scams, phishing, malware, fake reviews, impersonation, spam, counterfeit/stolen goods, credential theft, evasion, private keys, or guaranteed-profit claims.
