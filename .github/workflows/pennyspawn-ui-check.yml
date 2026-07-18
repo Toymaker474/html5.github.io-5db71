@@ -1,0 +1,31 @@
+name: Check PennySpawn Public UI
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "pennyspawn-ai/**"
+      - ".github/workflows/pennyspawn-ui-check.yml"
+  pull_request:
+    paths:
+      - "pennyspawn-ai/**"
+      - ".github/workflows/pennyspawn-ui-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  public-ui-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm private agent source is absent
+        shell: bash
+        run: test -z "$(git ls-files 'pennyspawn-ai/worker/**')"
+      - name: Check dashboard JavaScript
+        run: node --check pennyspawn-ai/q.js
+      - name: Confirm required dashboard files
+        run: |
+          test -s pennyspawn-ai/index.html
+          test -s pennyspawn-ai/q.css
+          test -s pennyspawn-ai/q.js
