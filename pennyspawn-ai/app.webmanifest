@@ -1,0 +1,14 @@
+{
+  "name": "PennySpawn Q-Arena Live",
+  "short_name": "Q-Arena",
+  "description": "Live-only control room and spectator dashboard for a private x402 AI microservice engine.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#03050a",
+  "theme_color": "#03050a",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

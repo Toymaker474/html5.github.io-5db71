@@ -1,62 +1,72 @@
-# 🧬 PennySpawn Q-Arena — Public Dashboard
+# 🧬 PennySpawn Q-Arena — Live Public PWA
 
-This folder contains the **public iPhone-friendly spectator arena and owner dashboard only**. The active agent/Worker source belongs in a separate **private GitHub repository**.
+This folder contains the **public iPhone-friendly spectator arena and owner dashboard only**. The active agent and payment Worker must remain in a separate **private GitHub repository**.
 
-## Survival design
+## Live-only behavior
 
-- Paid service price: **$0.01 USDC** per settled request.
-- Quarter floor: **$0.05**. Ending a quarter below this floor terminates the demo generation.
-- One-hour starting target: **$0.50 gross**.
-- Four 15-minute quarter targets: 13¢, 13¢, 12¢, and 12¢.
-- Fitness starts at `0.25` and evolves by `×2.5`.
-- Reaching a quarter target creates one logical offspring record.
-- Missing the full hourly target terminates the generation and activates a mutated replacement.
-- Offspring receive **$0 spending authority** and cannot deploy themselves.
+- No fake earnings.
+- No local “paid job” button.
+- No simulated revenue.
+- The dashboard stays offline until a private Worker responds at `/api/public/status`.
+- Every displayed dollar must come from the Worker’s settled x402 ledger.
+- A failed Worker lifecycle transition triggers the non-gory termination animation.
 
-The $0.50 value is a target, not a promise. The software cannot guarantee traffic, customers, settlement, revenue, or profit.
+## Survival target
 
-## Public experience
+The default objective is one settled one-cent job per second:
 
-- Owner login screen plus spectator access.
-- Animated non-gory survival arena using abstract energy beams and particles.
-- Watcher AI narration and agent thought feed.
-- Quarter and hourly revenue meters.
-- Termination archive and offspring tree.
-- Local demo controls.
-- Live private-Worker status connection.
-- Email-report button that opens a prefilled message in the iPhone Mail app.
+```text
+$0.01 × 1 job/second
+= $0.60 per minute
+= $6.00 per 10-minute cycle
+= $36.00 per hour
+```
 
-The login on a public static website is only a **local display lock**. It is not secure authentication and must never protect real wallet, deployment, or administrative operations. Real owner actions must be enforced by the private Worker using server-side secrets.
+This is a target, not guaranteed income. Software cannot create customers or promise profit.
 
-The supplied dashboard password is stored only as a SHA-256 digest, not readable plaintext. A determined person can still bypass any client-side login because the page itself is public. Do not reuse this password on GitHub, email, banking, wallets, or any other account.
+## Owner settings
 
-## Public files
+The public control room can call private Worker endpoints with a session-only bearer token:
 
-- `index.html` — dashboard, login, arena, reports, and controls.
-- `q.css` — mobile visual system.
-- `q.js` — local simulation, hashed display login, canvas effects, and Worker-status connection.
+```text
+POST /api/admin/settings
+POST /api/admin/evaluate
+POST /api/admin/email-report
+```
 
-Demo buttons simulate jobs locally. They do not create revenue, charge customers, or contact a wallet.
+Supported settings:
 
-## Email reports
+- cycle duration from 2 to 60 minutes;
+- target cents per second;
+- model policy: `auto`, `instant`, `fast`, or `smart`;
+- verified report sender and destination.
 
-The static dashboard can:
+The admin token is not stored by the page. Never use a wallet seed phrase or private key as an admin token.
 
-1. save an email address in the browser;
-2. generate the current earnings report;
-3. open a prefilled email in the iPhone Mail app;
-4. copy the report.
+## Open-model router
 
-It cannot silently send automatic hourly email without a private backend email credential. Never place an email-provider password or API key in this public repository.
+The intended private Worker uses three routes:
 
-## Private source setup
+1. **Instant deterministic code** for JSON cleanup, validation, formatting, and basic compression.
+2. **GLM-4.7-Flash** for fast open-model language work.
+3. **Gemma 4** for higher-quality open-model work.
 
-1. Download the private engine ZIP supplied in the ChatGPT conversation.
-2. Create `pennyspawn-private-engine` on GitHub and select **Private**.
-3. Open a Codespace, upload the ZIP, and follow its `README.md`.
-4. Deploy to Base Sepolia testnet first.
-5. Add only a public `0x...` receiving address. Never add a seed phrase or private key.
+Using instant code for simple tasks is essential because a free model quota cannot realistically process one large-model request every second.
 
-## Important history note
+## iPhone PWA
 
-An earlier prototype Worker was previously committed to this public repository. Removing files from the current branch does not erase old Git commit history. For complete source confidentiality, make this repository private or replace it with a fresh public GUI-only repository after the private engine repository is created.
+The dashboard includes:
+
+- `app.webmanifest`;
+- `sw.js` for shell caching;
+- safe-area and full-screen mobile styling;
+- an install action for Add to Home Screen;
+- a shareable spectator URL using `?worker=https://...`.
+
+## Login warning
+
+The username/password gate on a public static page is only a display lock. Real security must be enforced by the private Worker through `ADMIN_TOKEN` and server-side authorization.
+
+## Source privacy warning
+
+Older commits in this repository may still contain prototype Worker code. Deleting files from the latest branch does not erase Git history. Keep the production Worker in a fresh private repository.

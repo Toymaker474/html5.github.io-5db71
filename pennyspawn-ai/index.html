@@ -2,106 +2,134 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#03050a">
-<meta name="description" content="PennySpawn Q-Arena: public spectator simulation and owner dashboard for a safety-limited microservice experiment.">
-<title>PennySpawn Q-Arena</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Q-Arena">
+<meta name="description" content="PennySpawn Q-Arena: a live-only iPhone control room for a private x402 AI microservice engine.">
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>PennySpawn Q-Arena Live</title>
 <link rel="stylesheet" href="q.css">
 </head>
 <body>
+<div class="noise" aria-hidden="true"></div>
 <div class="login-gate" id="loginGate" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
   <div class="login-card glass">
-    <div class="login-mark">Q</div>
-    <div class="eyebrow">public arena · local owner gate</div>
-    <h1 id="loginTitle">Enter the control room</h1>
-    <p>Owner mode unlocks demo controls and report tools. Spectator mode only watches the arena.</p>
+    <div class="login-orbit"><div class="login-mark">Q</div></div>
+    <div class="eyebrow">live spectator network · owner control room</div>
+    <h1 id="loginTitle">Enter Q-Arena</h1>
+    <p>Owner mode unlocks private Worker settings. Spectator mode watches real telemetry only—there is no fake-money demo.</p>
     <form id="loginForm">
       <label>USERNAME<input id="loginUser" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Owner username"></label>
       <label>PASSWORD<input id="loginPass" type="password" autocomplete="current-password" placeholder="Owner password"></label>
       <button class="btn" type="submit">Unlock owner mode</button>
-      <button class="btn secondary" id="spectatorBtn" type="button">Watch as spectator</button>
+      <button class="btn secondary" id="spectatorBtn" type="button">Watch live as spectator</button>
     </form>
     <div class="login-error" id="loginError" aria-live="polite"></div>
-    <small>This is a local display lock on a public GitHub Pages site—not secure account authentication. Real private actions must stay behind your Worker’s server-side token.</small>
+    <small>The public-page login is a display lock, not bank-grade security. Real changes require the private Worker admin token.</small>
   </div>
 </div>
 
 <main class="shell" id="appShell" aria-hidden="true">
 <header class="top glass">
-  <div class="brand"><div class="logo">Q</div><div><strong>PennySpawn Q-Arena</strong><small>survival lab · public spectator feed</small></div></div>
-  <div class="top-actions"><span class="pill"><i class="dot"></i><span id="topState">DEMO ALIVE</span></span><span class="pill" id="accessBadge">SPECTATOR</span><button class="mini-btn" id="logoutBtn" type="button">Exit</button></div>
+  <div class="brand"><div class="logo">Q</div><div><strong>PennySpawn Q-Arena</strong><small>live-only survival telemetry</small></div></div>
+  <div class="top-actions">
+    <span class="pill"><i class="dot" id="statusDot"></i><span id="topState">OFFLINE</span></span>
+    <span class="pill" id="accessBadge">SPECTATOR</span>
+    <button class="mini-btn" id="installBtn" type="button">Install</button>
+    <button class="mini-btn" id="logoutBtn" type="button">Exit</button>
+  </div>
 </header>
 
 <section class="hero">
   <article class="hero-copy glass">
-    <div class="eyebrow">earn · improve · survive · reproduce</div>
-    <h1>Build value.<br><span>Or face termination.</span></h1>
-    <p>The arena watches a legal AI microservice generation compete against two hard thresholds: at least <b>$0.05 per quarter</b> to avoid immediate failure, and <b>$0.50 per hour</b> to survive the generation and produce offspring.</p>
-    <div class="hero-tags"><span class="tag">$0.01 per settled job</span><span class="tag">4 × 15-minute quarters</span><span class="tag">fitness 0.25 × 2.5</span><span class="tag warn">targets are not guaranteed earnings</span></div>
+    <div class="eyebrow">real settlements · open models · autonomous cycle alarm</div>
+    <h1>One penny.<br><span>Every second.</span></h1>
+    <p>The live target is <b>one settled $0.01 job per second</b>. At the default 10-minute cycle, survival requires <b>$6.00</b>. The private Worker—not this page—records actual x402 settlements, schedules termination, mutates the next strategy, and creates zero-spend offspring.</p>
+    <div class="hero-tags"><span class="tag">$0.01 x402 service</span><span class="tag">10-minute default cycle</span><span class="tag">2-minute owner minimum</span><span class="tag warn">target ≠ guaranteed income</span></div>
   </article>
-  <article class="core glass">
-    <canvas id="arena" aria-label="Stylized non-gory AI survival arena"></canvas>
-    <div class="arena-hud"><span>WATCHER AI</span><strong id="watcherText">observing GEN-01</strong></div>
-    <div class="arena-legend"><span><i class="legend-dot alive"></i>alive</span><span><i class="legend-dot child"></i>offspring</span><span><i class="legend-dot dead"></i>terminated</span></div>
+  <article class="arena-card glass">
+    <canvas id="arena" aria-label="Stylized live AI survival arena"></canvas>
+    <div class="arena-hud"><span>WATCHER</span><strong id="watcherText">waiting for live Worker</strong></div>
+    <div class="arena-footer"><span id="countdown">--:--</span><span id="connectionText">NO TELEMETRY</span></div>
   </article>
 </section>
 
 <section class="metrics">
-  <article class="metric glass"><small>QUARTER FLOOR</small><strong class="amber">$0.05</strong></article>
-  <article class="metric glass"><small>HOUR SURVIVAL TARGET</small><strong class="mint" id="hourMetric">$0.50</strong></article>
-  <article class="metric glass"><small>ACTIVE FITNESS</small><strong class="cyan" id="orbFitness">0.25</strong></article>
-  <article class="metric glass"><small>NEXT FITNESS</small><strong class="violet-text" id="nextFitness">0.625</strong></article>
-  <article class="metric glass"><small>OFFSPRING SPENDING</small><strong>$0.00</strong></article>
+  <article class="metric glass"><small>ACTUAL CYCLE EARNED</small><strong class="mint" id="cycleActual">$0.00</strong><em id="cycleGoal">target unavailable</em></article>
+  <article class="metric glass"><small>ACTUAL PACE</small><strong class="cyan" id="paceActual">0.00¢/s</strong><em>goal 1.00¢/s</em></article>
+  <article class="metric glass"><small>PROJECTED HOUR</small><strong id="projectedHour">$0.00</strong><em>based on current live pace</em></article>
+  <article class="metric glass"><small>ALL-TIME SETTLED</small><strong class="violet-text" id="allTimeEarned">$0.00</strong><em id="allTimeJobs">0 paid jobs</em></article>
+  <article class="metric glass"><small>ACTIVE GENERATION</small><strong id="generationMetric">—</strong><em id="fitnessMetric">fitness —</em></article>
 </section>
 
 <section class="section glass">
-  <div class="section-head"><div><div class="eyebrow">spectator timeline</div><h2>Quarter-cycle survival ring</h2><p>Under 5¢ in a quarter triggers termination. Reaching the quarter target creates a logical offspring. Missing $0.50 after four quarters terminates the generation even if some quarters survived.</p></div><div class="step">01</div></div>
-  <div class="quarters" id="quarters"></div>
+  <div class="section-head"><div><div class="eyebrow">real earnings—never simulated</div><h2>Settlement pulse</h2><p>The graph only moves when the connected private Worker reports settled x402 revenue. Offline mode stays at zero instead of inventing data.</p></div><div class="step">01</div></div>
+  <div class="chart-wrap"><canvas id="earningsChart" aria-label="Live earnings chart"></canvas><div class="chart-empty" id="chartEmpty">Connect the real Worker to begin telemetry.</div></div>
+  <div class="pulse-grid"><div><small>Cycle jobs</small><strong id="cycleJobs">0</strong></div><div><small>Needed jobs</small><strong id="neededJobs">—</strong></div><div><small>Cycle progress</small><strong id="cycleProgress">0%</strong></div><div><small>Hour actual</small><strong id="hourActual">$0.00</strong></div><div><small>Agent status</small><strong id="agentStatus">offline</strong></div><div><small>Model route</small><strong id="modelRoute">—</strong></div></div>
 </section>
 
 <section class="section glass">
-  <div class="section-head"><div><div class="eyebrow">watch the agents think</div><h2>Live arena and agent mind feed</h2><p>The Watcher AI observes each active agent, records what it tried, and witnesses non-gory energy-beam terminations when a generation fails.</p></div><div class="step">02</div></div>
+  <div class="section-head"><div><div class="eyebrow">watch the real lifecycle</div><h2>Agent mind and termination chamber</h2><p>Watcher narration is calculated from live numbers. A failed cycle triggers an abstract energy-beam termination animation only after the Worker reports the strategy as dead.</p></div><div class="step">02</div></div>
   <div class="arena-grid">
-    <article class="panel mind-panel"><div class="panel-title"><span>ACTIVE AGENT</span><strong id="agentState">agent-demo-01</strong></div><div class="thought" id="thoughtBubble">“Scanning legal microservice demand…”</div><div class="mind-grid"><div><small>Generation</small><strong id="generationState">1</strong></div><div><small>Strategy</small><strong id="strategyState">balanced</strong></div><div><small>Specialty</small><strong id="specialtyState">compress</strong></div><div><small>Status</small><strong id="agentStatus" class="mint">alive</strong></div></div><div class="watcher-card"><div class="watcher-eye">◉</div><div><b>Watcher AI</b><p id="watcherNarration">GEN-01 is being evaluated. No real payments are connected.</p></div></div></article>
-    <article class="panel"><div class="eyebrow" style="margin-bottom:11px">event stream</div><div class="log" id="log"></div></article>
+    <article class="panel mind-panel">
+      <div class="panel-title"><span>ACTIVE AGENT</span><strong id="agentState">not connected</strong></div>
+      <div class="thought" id="thoughtBubble">“Waiting for authenticated settlement telemetry…”</div>
+      <div class="mind-grid"><div><small>Generation</small><strong id="generationState">—</strong></div><div><small>Strategy</small><strong id="strategyState">—</strong></div><div><small>Specialty</small><strong id="specialtyState">—</strong></div><div><small>Cycle</small><strong id="cycleState">—</strong></div></div>
+      <div class="watcher-card"><div class="watcher-eye">◉</div><div><b>Watcher AI</b><p id="watcherNarration">No Worker is connected, so no earnings or deaths are being claimed.</p></div></div>
+    </article>
+    <article class="panel"><div class="panel-title"><span>LIVE EVENT STREAM</span><strong id="eventCount">0</strong></div><div class="log" id="log"><div class="empty-log">No live events yet.</div></div></article>
   </div>
 </section>
 
-<section class="section glass owner-only" id="ownerPanel">
-  <div class="section-head"><div><div class="eyebrow">owner controls</div><h2>Evolution control room</h2><p>Demo controls are local only. Connect a private Cloudflare Worker to read real settled-job state.</p></div><div class="step">03</div></div>
-  <div class="lab-grid">
-    <div class="panel">
-      <div class="field"><label for="workerUrl">CLOUDFLARE WORKER URL</label><input class="input" id="workerUrl" inputmode="url" placeholder="https://pennyspawn-quarter-engine.username.workers.dev"></div>
-      <div class="btns"><button class="btn" id="connectBtn">Connect live Worker</button><button class="btn secondary" id="saveBtn">Save URL</button></div>
-      <div class="row"><span>MODE</span><strong id="modeState" class="amber">LOCAL DEMO</strong></div>
-      <div class="row"><span>QUARTER REVENUE</span><strong id="cycleMoney">$0.00 / $0.13</strong></div><div class="bar"><i id="cycleBar"></i></div>
-      <div class="row"><span>HOUR REVENUE</span><strong id="hourMoney">$0.00 / $0.50</strong></div><div class="bar"><i id="hourBar"></i></div>
-      <div class="btns triple"><button class="btn violet" id="jobBtn">+ Demo paid job</button><button class="btn secondary" id="advanceBtn">End quarter</button><button class="btn danger" id="terminateBtn">Test termination</button></div>
-      <button class="btn ghost wide" id="resetBtn">Reset organism</button>
-      <p class="tiny">Demo buttons do not create money, charge customers, or contact a wallet.</p>
-    </div>
-    <div class="panel">
-      <div class="eyebrow" style="margin-bottom:11px">email earnings report</div>
-      <div class="field"><label for="reportEmail">YOUR EMAIL ADDRESS</label><input class="input" id="reportEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div class="report-preview" id="reportPreview"></div>
-      <div class="btns"><button class="btn" id="emailBtn">Open report in Mail</button><button class="btn secondary" id="copyReportBtn">Copy report</button></div>
-      <p class="tiny">This free version opens a prefilled email in your iPhone Mail app. A public static page cannot secretly send automatic email. Automatic hourly delivery needs a private backend email credential.</p>
-    </div>
+<section class="section glass owner-only locked" id="ownerPanel">
+  <div class="section-head"><div><div class="eyebrow">owner-only server controls</div><h2>iPhone mission control</h2><p>The admin token is kept in memory only and is never saved to localStorage. Settings are applied to the private Worker, not faked in the browser.</p></div><div class="step">03</div></div>
+  <div class="owner-grid">
+    <article class="panel">
+      <div class="field"><label for="workerUrl">PRIVATE WORKER URL</label><input class="input" id="workerUrl" inputmode="url" placeholder="https://pennyspawn-live.username.workers.dev"></div>
+      <div class="field"><label for="adminToken">ADMIN TOKEN — SESSION ONLY</label><input class="input" id="adminToken" type="password" autocomplete="off" placeholder="Never saved on this device"></div>
+      <div class="btns"><button class="btn" id="connectBtn">Connect real Worker</button><button class="btn secondary" id="shareBtn">Copy spectator link</button></div>
+      <p class="tiny">The public app can safely display a Worker URL. Never paste a wallet seed phrase or private key.</p>
+    </article>
+    <article class="panel settings-panel">
+      <div class="slider-head"><label for="cycleMinutes">TERMINATION CYCLE</label><strong><span id="cycleMinutesValue">10</span> min</strong></div>
+      <input id="cycleMinutes" type="range" min="2" max="60" value="10" step="1">
+      <div class="slider-head"><label for="targetRate">TARGET PACE</label><strong><span id="targetRateValue">1.00</span>¢/s</strong></div>
+      <input id="targetRate" type="range" min="0.05" max="5" value="1" step="0.05">
+      <div class="field"><label for="modelPolicy">OPEN-MODEL POLICY</label><select class="input" id="modelPolicy"><option value="auto">Auto route: instant + fast + smart</option><option value="instant">Instant deterministic only</option><option value="fast">GLM fast model</option><option value="smart">Gemma smart model</option></select></div>
+      <div class="btns"><button class="btn violet" id="applySettingsBtn">Apply live settings</button><button class="btn danger" id="evaluateBtn">Evaluate cycle now</button></div>
+    </article>
+    <article class="panel">
+      <div class="field"><label for="reportEmail">VERIFIED REPORT EMAIL</label><input class="input" id="reportEmail" type="email" autocomplete="email" placeholder="Verified Cloudflare destination"></div>
+      <div class="field"><label for="reportFrom">VERIFIED SENDER</label><input class="input" id="reportFrom" type="email" autocomplete="off" placeholder="reports@yourdomain.com"></div>
+      <div class="report-preview" id="reportPreview">Connect the Worker to create a real earnings report.</div>
+      <div class="btns"><button class="btn" id="emailBtn">Send live report</button><button class="btn secondary" id="copyReportBtn">Copy report</button></div>
+      <p class="tiny">Automatic sending requires Cloudflare Email Service and a verified sender/destination. The Worker returns a setup error instead of pretending an email was sent.</p>
+    </article>
   </div>
 </section>
 
 <section class="section glass">
-  <div class="section-head"><div><div class="eyebrow">genetic record</div><h2>Genome and offspring tree</h2><p>Successful agents produce one zero-spend logical child. Failed agents are visually terminated, archived, and replaced by a mutated generation.</p></div><div class="step">04</div></div>
-  <div class="genome"><article class="gene"><small>Fitness</small><strong id="geneFitness">0.25</strong></article><article class="gene"><small>Mutation factor</small><strong>×2.5</strong></article><article class="gene"><small>Temperature</small><strong id="geneTemp">0.45</strong></article><article class="gene"><small>Max tokens</small><strong id="geneTokens">240</strong></article></div>
-  <div class="tree" id="tree"></div>
+  <div class="section-head"><div><div class="eyebrow">free/open model fleet</div><h2>Three-lane intelligence router</h2><p>One request per second is not realistic through a large model on a free quota. The efficient design sends simple work through instant code and reserves open models for tasks that benefit from language reasoning.</p></div><div class="step">04</div></div>
+  <div class="model-grid">
+    <article class="model-card active"><span>⚡ INSTANT</span><h3>Deterministic Engine</h3><p>JSON cleanup, formatting, compression, and validation without an AI inference call.</p><b>Best chance at 1 job/s</b></article>
+    <article class="model-card"><span>🧠 FAST OPEN MODEL</span><h3>GLM-4.7-Flash</h3><p>Fast instruction following and tool-style work when instant code is not enough.</p><b id="fastModelName">configured by Worker</b></article>
+    <article class="model-card"><span>💎 SMART OPEN MODEL</span><h3>Gemma 4</h3><p>Higher-quality copy and summarization with stronger intelligence but higher quota use.</p><b id="smartModelName">configured by Worker</b></article>
+  </div>
 </section>
 
 <section class="section glass">
-  <div class="section-head"><div><div class="eyebrow">strict safety boundaries</div><h2>Useful work only—no scams</h2><p>Revenue pressure never overrides legality, honesty, or wallet safety.</p></div><div class="step">05</div></div>
-  <div class="shield-grid"><article class="shield"><b class="mint">✅ Allowed</b><p>Prompt cleanup, accurate summaries, JSON repair, original names, truthful headlines, and honest product copy.</p></article><article class="shield block"><b class="red">⛔ Rejected</b><p>Phishing, credential theft, malware, impersonation, fake reviews, counterfeit or stolen goods, scams, evasion, and wallet-secret requests.</p></article><article class="shield"><b class="amber">👁 Spectator-safe drama</b><p>Termination uses abstract energy beams and particles—no gore, no real people, and no real-world harm.</p></article></div>
+  <div class="section-head"><div><div class="eyebrow">lineage ledger</div><h2>Deaths, mutations, and offspring</h2><p>Only the Worker can add records. Offspring remain logical records with zero spending authority and cannot create accounts or deploy themselves.</p></div><div class="step">05</div></div>
+  <div class="tree" id="tree"><article class="node"><b>Waiting for lineage</b><small>connect live Worker</small></article></div>
 </section>
 
-<footer class="footer">Public spectator simulation only until a private Worker is connected. The system cannot guarantee traffic, customers, $0.50 in one hour, or profit. Never use the dashboard password for another account.</footer>
+<section class="section glass install-card">
+  <div><div class="eyebrow">add to home screen</div><h2>Feels like an iPhone app</h2><p>Install Q-Arena as a PWA for full-screen launch, safe-area support, cached UI assets, and faster reopening. Live earnings still require internet and the private Worker.</p></div><button class="btn" id="installBigBtn">Install Q-Arena</button>
+</section>
+
+<footer class="footer">The one-cent-per-second target equals $6 per 10-minute cycle and $36 per hour. The software can meter real settlements and terminate failed strategies, but it cannot guarantee traffic, customers, payments, or profit.</footer>
 </main>
 <div class="toast" id="toast">Saved</div>
 <script src="q.js" defer></script>
