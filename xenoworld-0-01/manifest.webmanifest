@@ -1,0 +1,12 @@
+{
+  "name": "Project Xenoworld 0.01",
+  "short_name": "Xenoworld",
+  "description": "Offline procedural 3D alien ecosystem sandbox.",
+  "start_url": "./xenoworld_0_01.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#06100d",
+  "theme_color": "#07120f",
+  "icons": [{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
