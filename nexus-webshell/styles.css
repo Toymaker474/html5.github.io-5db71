@@ -1,0 +1,126 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #020713;
+  color: #e8f1ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; background: radial-gradient(circle at top, #11233f 0, #07111f 38%, #020713 100%); }
+
+body { min-height: 100dvh; padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); }
+
+button, input { font: inherit; }
+
+.shell {
+  width: min(100%, 980px);
+  min-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  gap: 10px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 2px;
+}
+
+.eyebrow { margin: 0 0 4px; font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .16em; color: #7dd3fc; }
+h1 { margin: 0; font-size: clamp(24px, 7vw, 42px); line-height: 1; letter-spacing: -.04em; }
+.status-group { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.status { padding: 7px 9px; border: 1px solid #23518a; border-radius: 999px; background: #071b31; color: #93c5fd; font: 800 10px/1 ui-monospace, monospace; }
+.status.safe { border-color: #176b50; background: #06231b; color: #86efac; }
+
+.notice {
+  border: 1px solid #1e3a5f;
+  border-radius: 14px;
+  padding: 11px 13px;
+  background: rgba(6, 17, 31, .86);
+  color: #bfd7f5;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.notice strong { color: #f8fbff; }
+
+.quickbar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+.quickbar button, .command-line button {
+  min-height: 44px;
+  border: 1px solid #244d77;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #163454, #0a1d33);
+  color: #eaf5ff;
+  font-weight: 750;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.quickbar button:active, .command-line button:active { transform: translateY(1px); }
+
+.terminal {
+  min-height: 320px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #173657;
+  border-radius: 16px;
+  padding: 14px;
+  background:
+    linear-gradient(rgba(5, 14, 27, .94), rgba(2, 8, 18, .98)),
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(125, 211, 252, .025) 22px 23px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 60px rgba(0,0,0,.25);
+  font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.entry { margin: 0 0 12px; }
+.entry.command { color: #7dd3fc; }
+.entry.command::before { content: "❯ "; color: #38bdf8; }
+.entry.output { color: #dbeafe; }
+.entry.error { color: #fca5a5; }
+.entry.system { color: #86efac; }
+.entry.muted { color: #8ba5c1; }
+
+.command-line {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #244d77;
+  border-radius: 14px;
+  padding: 7px;
+  background: #06111f;
+}
+
+.command-line label { padding-left: 5px; color: #7dd3fc; font: 700 12px/1 ui-monospace, monospace; white-space: nowrap; }
+.command-line input {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f8fbff;
+  font: 14px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.command-line input::placeholder { color: #607a97; }
+.command-line button { min-width: 64px; padding: 0 16px; }
+
+footer { display: flex; justify-content: space-between; gap: 10px; color: #718ba7; font: 11px/1.3 ui-monospace, monospace; padding: 0 4px; }
+
+@media (max-width: 620px) {
+  .topbar { align-items: center; }
+  .status-group .status:first-child { display: none; }
+  .quickbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .quickbar button:nth-last-child(-n+2) { grid-column: span 1; }
+  .command-line { grid-template-columns: 1fr auto; }
+  .command-line label { grid-column: 1 / -1; padding: 5px 5px 0; }
+  footer { flex-direction: column; gap: 3px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .status { animation: glow 2.4s ease-in-out infinite alternate; }
+  @keyframes glow { from { box-shadow: 0 0 0 rgba(56,189,248,0); } to { box-shadow: 0 0 18px rgba(56,189,248,.15); } }
+}
