@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#02050b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>NEXUS FLUX — WebGPU World Engine</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <canvas id="world" aria-label="Interactive scientific world simulation"></canvas>
+  <header>
+    <div><span class="eyebrow">NEXUS FLUX 0.1</span><h1 id="title">VORTEX FIELD</h1></div>
+    <span id="backend" class="chip">STARTING</span>
+  </header>
+  <section class="metrics" aria-live="polite">
+    <div><b id="fps">—</b><span>FPS</span></div><div><b id="grid">—</b><span>GRID</span></div><div><b id="quality">—</b><span>SCALE</span></div>
+  </section>
+  <nav>
+    <button class="active" data-mode="vortex"><span>🌀</span>VORTEX</button>
+    <button data-mode="terra"><span>🌍</span>TERRA</button>
+  </nav>
+  <aside id="hint">Drag through the field to bend the current.</aside>
+  <dialog id="error"><h2>Engine blocked</h2><p id="errorText"></p><button onclick="location.reload()">Reload safely</button></dialog>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
