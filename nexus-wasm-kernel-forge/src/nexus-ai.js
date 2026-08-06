@@ -12,7 +12,13 @@ function randomFactory(seed = 0x4e455855) {
 }
 
 const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
-const yieldFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+const yieldFrame = () => new Promise(resolve => {
+  if (typeof globalThis.requestAnimationFrame === 'function') {
+    globalThis.requestAnimationFrame(() => resolve());
+  } else {
+    setTimeout(resolve, 0);
+  }
+});
 
 export class EvolutionSearch {
   constructor({ genes, population = 8, generations = 3, seed = 0x4e455855, elite = 2 }) {
