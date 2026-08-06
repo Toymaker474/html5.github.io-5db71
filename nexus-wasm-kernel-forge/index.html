@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#02050b">
+  <title>NEXUS VORTEX/1 — WASM Scientific Engine</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/wabt@1.0.39/index.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <main class="world">
+    <canvas id="fluid" aria-label="Interactive WebAssembly fluid simulation"></canvas>
+
+    <header class="hud top-hud">
+      <div>
+        <p class="eyebrow">NEXUS WASM KERNEL FORGE · GENERATION ONE</p>
+        <h1>VORTEX/1</h1>
+        <p class="subtitle">Paper-backed incompressible fluid engine. Drag the water.</p>
+      </div>
+      <div id="status" class="status compiling">COMPILING</div>
+    </header>
+
+    <section class="hud metrics" aria-live="polite">
+      <div><span>FPS</span><strong id="fps">—</strong></div>
+      <div><span>WASM STEP</span><strong id="stepMs">—</strong></div>
+      <div><span>GRID</span><strong id="grid">—</strong></div>
+      <div><span>ENERGY</span><strong id="energy">—</strong></div>
+      <div><span>KERNEL</span><strong id="kernelHash">—</strong></div>
+    </section>
+
+    <nav class="hud controls" aria-label="Simulation controls">
+      <button id="vortex">🌀 Vortex</button>
+      <button id="pause">Ⅱ Pause</button>
+      <button id="clear">Clear</button>
+      <button id="benchmark">Benchmark</button>
+      <button id="tune">AI Tune</button>
+      <button id="exportWasm">Export .wasm</button>
+      <button id="exportContract">Tool contract</button>
+      <button id="exportState">State</button>
+      <button id="openCompiler">Compiler</button>
+    </nav>
+
+    <aside id="compilerPanel" class="compiler" hidden>
+      <div class="compiler-head">
+        <div>
+          <p class="eyebrow">LIVE SCIENTIFIC COMPILER</p>
+          <h2>VORTEX + WAT</h2>
+        </div>
+        <button id="closeCompiler" aria-label="Close compiler">×</button>
+      </div>
+
+      <label for="vortexSource">VORTEX/1 configuration language</label>
+      <textarea id="vortexSource" spellcheck="false"></textarea>
+
+      <details>
+        <summary>WebAssembly Text kernel</summary>
+        <label for="watSource">Editable WAT source</label>
+        <textarea id="watSource" spellcheck="false"></textarea>
+      </details>
+
+      <div class="compiler-actions">
+        <button id="compile">Compile and restart</button>
+        <button id="resetSource">Reset verified source</button>
+      </div>
+      <pre id="compilerOutput">Waiting for compiler.</pre>
+    </aside>
+
+    <aside id="reportPanel" class="report" hidden>
+      <div class="report-head"><strong>Scientific report</strong><button id="closeReport">×</button></div>
+      <pre id="report"></pre>
+    </aside>
+  </main>
+
+  <noscript>This laboratory requires JavaScript and WebAssembly.</noscript>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
