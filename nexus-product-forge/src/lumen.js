@@ -20,9 +20,9 @@ function slugify(value) {
 
 export function classifyIdea(idea) {
   const text = String(idea || '').toLowerCase();
-  if (/\b(ai|model|neural|classifier|train|machine learning|agent brain)\b/.test(text)) return 'ai';
-  if (/\b(game|player|enemy|combat|platformer|roguelike|shooter|score)\b/.test(text)) return 'game';
-  if (/\b(sim|simulation|physics|particle|evolution|ecosystem|chemistry|climate|biology|gravity)\b/.test(text)) return 'simulation';
+  if (/\b(ai|models?|neural|classifiers?|train|training|machine learning|agent brains?)\b/.test(text)) return 'ai';
+  if (/\b(games?|players?|enem(?:y|ies)|combat|platformers?|roguelikes?|shooters?|scores?)\b/.test(text)) return 'game';
+  if (/\b(sims?|simulations?|physics|particles?|evolution|ecosystems?|chemistry|climate|biology|gravity)\b/.test(text)) return 'simulation';
   return 'app';
 }
 
@@ -34,10 +34,10 @@ export function naturalToLumen(idea, options = {}) {
   const features = new Set();
   const featureRules = [
     ['touch', /\b(touch|mobile|iphone|phone)\b/i],
-    ['particles', /\b(particle|fluid|sand|dust|spark)\b/i],
-    ['evolution', /\b(evolution|genetic|creature|ecosystem|life)\b/i],
-    ['physics', /\b(physics|gravity|collision|force|spring)\b/i],
-    ['local-ai', /\b(ai|model|neural|classifier|training)\b/i],
+    ['particles', /\b(particles?|fluids?|sand|dust|sparks?)\b/i],
+    ['evolution', /\b(evolution|genetic|creatures?|ecosystems?|life)\b/i],
+    ['physics', /\b(physics|gravity|collisions?|forces?|springs?)\b/i],
+    ['local-ai', /\b(ai|models?|neural|classifiers?|training)\b/i],
     ['offline', /\b(offline|local)\b/i],
   ];
   for (const [name, pattern] of featureRules) if (pattern.test(original)) features.add(name);
