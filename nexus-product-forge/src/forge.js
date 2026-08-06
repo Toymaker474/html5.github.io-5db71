@@ -7,6 +7,7 @@ let currentBuild = null;
 
 const waitFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 const bytes = text => new TextEncoder().encode(text);
+const unfinishedMarker = /\bTODO\b|\bCOMING SOON\b|<!--\s*PLACEHOLDER\s*-->|>\s*PLACEHOLDER\s*</i;
 
 async function sha256(text) {
   const digest = await crypto.subtle.digest('SHA-256', bytes(text));
@@ -25,7 +26,7 @@ function validateBuild(build) {
   for (const path of required) if (!build.files[path]?.trim()) errors.push(`Missing required file: ${path}`);
   if (!/^<!doctype html>/i.test(build.files['index.html'] || '')) errors.push('index.html does not start with a document type.');
   if (!build.files['index.html']?.includes('NEXUS Generation One')) errors.push('Generated runtime identity is missing.');
-  if (/\b(TODO|PLACEHOLDER|COMING SOON)\b/i.test(Object.values(build.files).join('\n'))) errors.push('Placeholder language detected.');
+  if (unfinishedMarker.test(Object.values(build.files).join('\n'))) errors.push('Unfinished implementation marker detected.');
   const total = Object.values(build.files).reduce((sum, value) => sum + bytes(value).byteLength, 0);
   if (total > 1_500_000) errors.push('Generation One project exceeds the 1.5 MB safety budget.');
   try {
