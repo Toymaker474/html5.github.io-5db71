@@ -1,0 +1,16 @@
+{
+  "name": "nexus-wasm-kernel-forge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "check": "npm test && npm run test:browser"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.0",
+    "wabt": "1.0.39"
+  }
+}
