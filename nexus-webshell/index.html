@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="A browser-safe, phone-first PowerShell-inspired shell for NEXUS tools and AI agents.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <title>NEXUS WebShell</title>
+</head>
+<body>
+  <main class="shell" aria-label="NEXUS WebShell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">NEXUS TOOL 02</p>
+        <h1>WebShell</h1>
+      </div>
+      <div class="status-group">
+        <span id="runtime-status" class="status">STARTING</span>
+        <span class="status safe">SAFE WEB MODE</span>
+      </div>
+    </header>
+
+    <section class="notice" aria-label="Safety notice">
+      <strong>Real browser shell — not native pwsh.exe.</strong>
+      Commands run only inside this page's virtual workspace. They cannot edit Windows, your iPhone, or GitHub by themselves.
+    </section>
+
+    <nav class="quickbar" aria-label="Quick commands">
+      <button type="button" data-command="Get-Help">Help</button>
+      <button type="button" data-command="Get-ChildItem">Files</button>
+      <button type="button" data-command="Get-Capability">Device</button>
+      <button type="button" data-command="Get-Tool">Tools</button>
+      <button type="button" data-command="Clear-Host">Clear</button>
+    </nav>
+
+    <section id="terminal" class="terminal" role="log" aria-live="polite" aria-label="Command output"></section>
+
+    <form id="command-form" class="command-line" autocomplete="off">
+      <label id="prompt" for="command-input">PS /home/tyler&gt;</label>
+      <input id="command-input" name="command" inputmode="text" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Type Get-Help" aria-label="WebShell command">
+      <button type="submit">Run</button>
+    </form>
+
+    <footer>
+      <span id="storage-status">Workspace: loading</span>
+      <span>MIT · Offline-first</span>
+    </footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
