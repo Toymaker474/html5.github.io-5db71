@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { strFromU8, unzipSync } from 'fflate';
 
-test('Generation One forges and previews all four product classes on a phone viewport', async ({ page }) => {
+test('Generation One forges, previews, and packages all four product classes on a phone viewport', async ({ page }) => {
   const failures = [];
   page.on('pageerror', error => failures.push(`pageerror: ${error.message}`));
   page.on('console', message => { if (message.type() === 'error') failures.push(`console: ${message.text()}`); });
@@ -26,6 +28,21 @@ test('Generation One forges and previews all four product classes on a phone vie
     await expect(frame.locator(selector)).toBeVisible();
     await expect(page.locator('#evidence')).toContainText('rootSha256');
   }
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('#download').click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/\.zip$/);
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+  const archive = unzipSync(new Uint8Array(await readFile(downloadPath)));
+  const required = ['index.html', 'project.lumen', 'nexus-project.json', 'README.md', 'tests/smoke.mjs', 'package.json', 'evidence.json'];
+  for (const path of required) expect(archive[path], `archive missing ${path}`).toBeTruthy();
+  expect(strFromU8(archive['index.html'])).toContain('NEXUS Generation One');
+  const manifest = JSON.parse(strFromU8(archive['nexus-project.json']));
+  expect(manifest.dependencies).toEqual([]);
+  const evidence = JSON.parse(strFromU8(archive['evidence.json']));
+  expect(evidence.rootSha256).toMatch(/^[a-f0-9]{64}$/);
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
