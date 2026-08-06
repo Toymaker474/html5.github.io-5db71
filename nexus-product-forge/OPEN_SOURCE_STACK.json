@@ -1,0 +1,50 @@
+{
+  "schema": "nexus.open-source-stack.v1",
+  "generation": 1,
+  "policy": {
+    "freeOnly": true,
+    "openSourceOnlyForThirdPartyCode": true,
+    "paidApis": false,
+    "generatedProjectDependencies": 0,
+    "unknownLicenses": "BLOCK"
+  },
+  "forgeDependencies": [
+    {
+      "name": "fflate",
+      "version": "0.8.3",
+      "license": "MIT",
+      "purpose": "Create project ZIP archives in the browser",
+      "source": "https://github.com/101arrowz/fflate",
+      "runtime": "browser"
+    },
+    {
+      "name": "Playwright",
+      "version": "1.62.0",
+      "license": "Apache-2.0",
+      "purpose": "Automated Chromium phone-sized behavior verification",
+      "source": "https://github.com/microsoft/playwright",
+      "runtime": "GitHub Actions verification only"
+    }
+  ],
+  "webPlatform": [
+    "HTML",
+    "CSS",
+    "ECMAScript modules",
+    "Canvas 2D",
+    "Web Crypto SHA-256",
+    "Blob and object URLs",
+    "sandboxed iframe srcdoc",
+    "localStorage",
+    "Pointer Events"
+  ],
+  "futureQuarantinedUntilImplementedAndTested": [
+    "WebGPU engines",
+    "WebAssembly compilers",
+    "ONNX Runtime Web",
+    "Transformers.js",
+    "research-paper ingestion",
+    "automatic GitHub repository publishing",
+    "self-repair agents",
+    "native Windows workers"
+  ]
+}
