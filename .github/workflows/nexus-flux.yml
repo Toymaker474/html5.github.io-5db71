@@ -1,0 +1,20 @@
+name: Verify NEXUS FLUX
+on:
+  pull_request:
+    paths:
+      - 'nexus-flux/**'
+      - '.github/workflows/nexus-flux.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify tools, libraries, shaders, and engines
+        working-directory: nexus-flux
+        run: |
+          npm test
+          find src -name '*.js' -print0 | xargs -0 -n1 node --check

@@ -1,0 +1,14 @@
+import { FluxWorld } from './framework.js';
+const canvas=document.querySelector('#world'),backend=document.querySelector('#backend'),fps=document.querySelector('#fps'),grid=document.querySelector('#grid'),quality=document.querySelector('#quality'),title=document.querySelector('#title'),hint=document.querySelector('#hint');
+const world=new FluxWorld(canvas);
+const modeCopy={vortex:['VORTEX FIELD','Drag through the field to bend the current.'],terra:['TERRA HYDROLOGY','Touch the landscape to create a rain burst.']};
+for(const button of document.querySelectorAll('[data-mode]'))button.addEventListener('click',()=>{document.querySelector('.active')?.classList.remove('active');button.classList.add('active');world.setMode(button.dataset.mode);title.textContent=modeCopy[button.dataset.mode][0];hint.textContent=modeCopy[button.dataset.mode][1];});
+try{
+  const report=await world.init();
+  backend.textContent=report.backend==='webgpu'?'WEBGPU':'CPU SAFE';
+  backend.style.color=report.backend==='webgpu'?'#7dffce':'#ffd36d';
+  backend.dataset.build='0.1.1';
+  if(report.fallbackReason){backend.title=report.fallbackReason;hint.textContent=`Safe fallback active: ${report.fallbackReason}`;}
+  world.onStats=report=>{fps.textContent=report.performance.fps?report.performance.fps.toFixed(0):'—';quality.textContent=report.qualityScale.toFixed(2);const engine=report.engines.find(item=>item.name===title.textContent.split(' ')[0]);grid.textContent=engine?.parameters.grid??Math.round(Math.sqrt(engine?.parameters.count??0));};
+  setTimeout(()=>{hint.textContent=modeCopy[world.mode][1];hint.style.opacity='.45';},7000);
+}catch(error){document.querySelector('#errorText').textContent=String(error.stack||error);document.querySelector('#error').showModal();}
