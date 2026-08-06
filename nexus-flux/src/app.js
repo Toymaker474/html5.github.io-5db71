@@ -7,6 +7,7 @@ try{
   const report=await world.init();
   backend.textContent=report.backend==='webgpu'?'WEBGPU':'CPU SAFE';
   backend.style.color=report.backend==='webgpu'?'#7dffce':'#ffd36d';
+  backend.dataset.build='0.1.1';
   if(report.fallbackReason){backend.title=report.fallbackReason;hint.textContent=`Safe fallback active: ${report.fallbackReason}`;}
   world.onStats=report=>{fps.textContent=report.performance.fps?report.performance.fps.toFixed(0):'—';quality.textContent=report.qualityScale.toFixed(2);const engine=report.engines.find(item=>item.name===title.textContent.split(' ')[0]);grid.textContent=engine?.parameters.grid??Math.round(Math.sqrt(engine?.parameters.count??0));};
   setTimeout(()=>{hint.textContent=modeCopy[world.mode][1];hint.style.opacity='.45';},7000);
