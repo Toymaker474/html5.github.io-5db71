@@ -9,6 +9,12 @@ import { EvolutionSearch } from '../src/nexus-ai.js';
 
 let compilation;
 
+const absoluteDifference = (first, second) => {
+  let total = 0;
+  for (let index = 0; index < first.length; index += 1) total += Math.abs(first[index] - second[index]);
+  return total;
+};
+
 test('VORTEX/1 parses a strict scientific configuration', () => {
   const config = parseVortex(DEFAULT_VORTEX_SOURCE);
   assert.equal(config.schema, 'nexus.vortex.config.v1');
@@ -44,11 +50,13 @@ test('WASM fluid engine produces finite motion, dye structure, snapshots, and de
   const evolved = engine.metrics();
   assert.ok(Number.isFinite(evolved.kineticEnergy));
   assert.ok(Number.isFinite(evolved.sampledColorGradient));
-  assert.ok(evolved.frame === 5);
-  assert.notDeepEqual(Array.from(engine.view('red').slice(0, 128)), Array.from(snapshot.fields.red.slice(0, 128)));
+  assert.equal(evolved.frame, 5);
+  assert.ok(absoluteDifference(engine.view('red'), snapshot.fields.red) > 0.01, 'red dye field did not evolve');
+  assert.ok(absoluteDifference(engine.view('velocityX'), snapshot.fields.velocityX) > 0.01, 'velocity field did not evolve');
   engine.restore(snapshot);
   assert.equal(engine.frame, snapshot.frame);
-  assert.deepEqual(Array.from(engine.view('red').slice(0, 256)), Array.from(snapshot.fields.red.slice(0, 256)));
+  assert.deepEqual(Array.from(engine.view('red')), Array.from(snapshot.fields.red));
+  assert.deepEqual(Array.from(engine.view('velocityX')), Array.from(snapshot.fields.velocityX));
 });
 
 test('generic NEXUS evolutionary search converges on a measurable objective', async () => {
