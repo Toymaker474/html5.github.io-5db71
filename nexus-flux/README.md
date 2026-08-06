@@ -49,9 +49,9 @@ The regression suite includes a Safari-style 390×844 claimed-canvas recovery te
 
 ## Verification
 
-Current branch head at the repair deployment: `829a1ec0e282d934d61b4454155cfdaa18ccff96`
+Live repair commit: `5b85d74b6e214ebdb84d2361accdc06f7c1fc0df`
 
-GitHub Actions run `31097354413`:
+GitHub Actions run `31097696861` passed on the live repair commit. The preceding repair-specific run `31097354413` reported:
 
 - 13 tests passed;
 - 0 tests failed;
@@ -59,7 +59,7 @@ GitHub Actions run `31097354413`:
 - all JavaScript modules passed syntax validation;
 - all WGSL modules passed fail-closed linting.
 
-The hosted AppDeploy update passed 4/4 black-box tests with zero frontend and network errors.
+The hosted AppDeploy `0.1.1` update passed 4/4 black-box tests with zero frontend and network errors.
 
 ## Safety and truth
 
