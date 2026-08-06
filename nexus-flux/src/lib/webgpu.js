@@ -1,13 +1,22 @@
 import { validateShaderModule } from '../tools/shader-linter.js';
 export class FluxGpuContext {
   static async create(canvas, { alphaMode = 'premultiplied', powerPreference = 'high-performance' } = {}) {
-    if (!navigator.gpu) throw Object.assign(new Error('WebGPU is unavailable'), { code: 'WEBGPU_UNAVAILABLE' });
+    if (!navigator.gpu) throw Object.assign(new Error('WEBGPU_UNAVAILABLE'), { code: 'WEBGPU_UNAVAILABLE' });
     const adapter = await navigator.gpu.requestAdapter({ powerPreference });
-    if (!adapter) throw Object.assign(new Error('No WebGPU adapter'), { code: 'WEBGPU_NO_ADAPTER' });
+    if (!adapter) throw Object.assign(new Error('WEBGPU_NO_ADAPTER'), { code: 'WEBGPU_NO_ADAPTER' });
     const device = await adapter.requestDevice();
     const context = canvas.getContext('webgpu');
+    if (!context) {
+      device.destroy();
+      throw Object.assign(new Error('WEBGPU_CANVAS_CONTEXT_UNAVAILABLE'), { code: 'WEBGPU_CANVAS_CONTEXT_UNAVAILABLE' });
+    }
     const format = navigator.gpu.getPreferredCanvasFormat();
-    context.configure({ device, format, alphaMode });
+    try {
+      context.configure({ device, format, alphaMode });
+    } catch (error) {
+      device.destroy();
+      throw Object.assign(new Error(`WEBGPU_CANVAS_CONFIGURE_FAILED:${String(error?.message || error)}`), { code: 'WEBGPU_CANVAS_CONFIGURE_FAILED', cause: error });
+    }
     return new FluxGpuContext({ canvas, adapter, device, context, format });
   }
   constructor({ canvas, adapter, device, context, format }) { this.canvas = canvas; this.adapter = adapter; this.device = device; this.context = context; this.format = format; this.resources = new Set(); }
