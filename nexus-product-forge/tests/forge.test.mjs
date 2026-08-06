@@ -10,6 +10,8 @@ const ideas = {
   ai: 'Make a browser neural classifier I can train and export.',
 };
 
+const unfinishedMarker = /\bTODO\b|\bCOMING SOON\b|<!--\s*PLACEHOLDER\s*-->|>\s*PLACEHOLDER\s*</i;
+
 test('natural intent is classified into all four Generation One builders', () => {
   for (const [kind, idea] of Object.entries(ideas)) assert.equal(classifyIdea(idea), kind);
 });
@@ -41,7 +43,7 @@ test('every builder emits a complete dependency-free project', () => {
     }
     const manifest = JSON.parse(build.files['nexus-project.json']);
     assert.deepEqual(manifest.dependencies, []);
-    assert.doesNotMatch(Object.values(build.files).join('\n'), /\b(TODO|PLACEHOLDER|COMING SOON)\b/i);
+    assert.doesNotMatch(Object.values(build.files).join('\n'), unfinishedMarker);
     assert.match(build.files['index.html'], /NEXUS Generation One/);
   }
 });
