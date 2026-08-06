@@ -51,7 +51,7 @@ The regression suite includes a Safari-style 390×844 claimed-canvas recovery te
 
 Live repair commit: `5b85d74b6e214ebdb84d2361accdc06f7c1fc0df`
 
-GitHub Actions run `31097696861` passed on the live repair commit. The preceding repair-specific run `31097354413` reported:
+GitHub Actions run `31097696861` passed on the live repair commit. The repair-specific run `31097354413` reported:
 
 - 13 tests passed;
 - 0 tests failed;
