@@ -1,0 +1,12 @@
+{
+  "name": "NEXUS WebShell",
+  "short_name": "WebShell",
+  "description": "A browser-safe, phone-first PowerShell-inspired shell for NEXUS tools and AI agents.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#020713",
+  "theme_color": "#07111f",
+  "orientation": "any",
+  "categories": ["developer", "utilities", "productivity"]
+}
