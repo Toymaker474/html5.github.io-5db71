@@ -1,0 +1,49 @@
+name: Verify NEXUS Product Forge Generation One
+
+on:
+  push:
+    branches:
+      - agent/nexus-product-forge-v1
+    paths:
+      - 'nexus-product-forge/**'
+      - '.github/workflows/nexus-product-forge.yml'
+  pull_request:
+    paths:
+      - 'nexus-product-forge/**'
+      - '.github/workflows/nexus-product-forge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-generation-one:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned open-source verifier
+        working-directory: nexus-product-forge
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Run compiler and builder tests
+        working-directory: nexus-product-forge
+        run: npm test
+      - name: Install Chromium verifier
+        working-directory: nexus-product-forge
+        run: npx playwright install --with-deps chromium
+      - name: Run autonomous phone-sized generation test
+        working-directory: nexus-product-forge
+        run: npm run test:browser
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-product-forge-failure-${{ github.run_id }}
+          path: |
+            nexus-product-forge/test-results/**
+            nexus-product-forge/playwright-report/**
+          if-no-files-found: ignore
+          retention-days: 14
