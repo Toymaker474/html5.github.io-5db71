@@ -10,6 +10,7 @@
     "check": "npm test && npm run test:browser"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.0"
+    "@playwright/test": "1.62.0",
+    "fflate": "0.8.3"
   }
 }
