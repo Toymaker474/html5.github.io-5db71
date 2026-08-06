@@ -1,0 +1,49 @@
+name: Verify NEXUS WASM Kernel Forge
+
+on:
+  push:
+    branches:
+      - agent/nexus-wasm-kernel-forge-v1
+    paths:
+      - 'nexus-wasm-kernel-forge/**'
+      - '.github/workflows/nexus-wasm-kernel-forge.yml'
+  pull_request:
+    paths:
+      - 'nexus-wasm-kernel-forge/**'
+      - '.github/workflows/nexus-wasm-kernel-forge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-wasm-fluid:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned open-source toolchain
+        working-directory: nexus-wasm-kernel-forge
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Compile WAT and verify solver libraries
+        working-directory: nexus-wasm-kernel-forge
+        run: npm test
+      - name: Install Chromium verifier
+        working-directory: nexus-wasm-kernel-forge
+        run: npx playwright install --with-deps chromium
+      - name: Operate phone-sized scientific workbench
+        working-directory: nexus-wasm-kernel-forge
+        run: npm run test:browser
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-wasm-kernel-forge-failure-${{ github.run_id }}
+          path: |
+            nexus-wasm-kernel-forge/test-results/**
+            nexus-wasm-kernel-forge/playwright-report/**
+          if-no-files-found: ignore
+          retention-days: 14
