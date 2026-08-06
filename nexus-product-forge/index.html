@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#040711">
+  <title>NEXUS Product Forge — Generation One</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js" integrity="sha384-w4u9iMgbHRZaYeLGrLa9Gg08iIZJxQwIAb3CPJsM89Z9UyVFFf6MrZpk0n3Yl6MI" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">NEXUS ECOSYSTEM · GENERATION ONE</p>
+      <h1>Say what should exist.</h1>
+      <p class="lede">The Forge chooses a builder, writes a runnable project, validates it, previews it, hashes every file, and packages the source.</p>
+    </div>
+    <div class="truth"><span></span> Deterministic toolsmith — no fake AI claims</div>
+  </header>
+
+  <main>
+    <section class="creator panel">
+      <label for="idea">Creation intent</label>
+      <textarea id="idea" rows="4" placeholder="Make a touch-controlled creature evolution simulation where organisms compete for energy.">Make a touch-controlled creature evolution simulation where organisms compete for energy.</textarea>
+      <div class="examples" aria-label="Example creations">
+        <button data-example="Build a local project board app that stores tasks offline.">Web app</button>
+        <button data-example="Make a touch-controlled creature evolution simulation with particles and gravity.">Simulation</button>
+        <button data-example="Make a mobile survival game where I dodge falling enemies for a high score.">Game</button>
+        <button data-example="Make a browser AI classifier I can train locally and export as model weights.">AI model</button>
+      </div>
+      <button class="forge" id="forge">⚡ LET THERE BE LIGHT</button>
+      <details>
+        <summary>AI-friendly LUMEN/1 source</summary>
+        <textarea id="lumen" rows="9" spellcheck="false"></textarea>
+        <button id="compile">Compile edited LUMEN</button>
+      </details>
+    </section>
+
+    <section class="result panel" aria-live="polite">
+      <div class="result-head">
+        <div><p class="eyebrow">BUILD STATE</p><h2 id="projectName">Waiting for intent</h2></div>
+        <div id="status" class="badge idle">IDLE</div>
+      </div>
+      <div class="pipeline" id="pipeline">
+        <span>Intent</span><i></i><span>LUMEN</span><i></i><span>Compile</span><i></i><span>Validate</span><i></i><span>Evidence</span><i></i><span>Package</span>
+      </div>
+      <div id="summary" class="summary">One idea is the only required input.</div>
+      <div class="actions">
+        <button id="download" disabled>Download project ZIP</button>
+        <button id="rerun" disabled>Re-run validation</button>
+      </div>
+      <div class="file-grid">
+        <article><h3>Generated files</h3><div id="files" class="files"></div></article>
+        <article><h3>Evidence</h3><pre id="evidence">No evidence yet.</pre></article>
+      </div>
+    </section>
+
+    <section class="preview panel">
+      <div class="preview-head"><div><p class="eyebrow">ISOLATED PREVIEW</p><h2>Generated product</h2></div><span>iframe sandbox</span></div>
+      <iframe id="preview" title="Generated project preview" sandbox="allow-scripts allow-downloads"></iframe>
+    </section>
+  </main>
+
+  <footer>Generation One builds small, real browser products. Later generations expand engines and autonomy only after this layer stays verified.</footer>
+  <script type="module" src="src/forge.js"></script>
+</body>
+</html>
