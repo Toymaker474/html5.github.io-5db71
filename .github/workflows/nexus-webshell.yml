@@ -1,0 +1,54 @@
+name: Verify NEXUS WebShell
+
+on:
+  push:
+    branches:
+      - agent/nexus-webshell-demo-v1
+    paths:
+      - 'nexus-webshell/**'
+      - '.github/workflows/nexus-webshell.yml'
+  pull_request:
+    paths:
+      - 'nexus-webshell/**'
+      - '.github/workflows/nexus-webshell.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-browser-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned open-source browser test tools
+        working-directory: nexus-webshell
+        run: npm install
+      - name: Check JavaScript syntax
+        working-directory: nexus-webshell
+        run: npm run check
+      - name: Install Chromium
+        working-directory: nexus-webshell
+        run: npx playwright install --with-deps chromium
+      - name: Start static WebShell server
+        working-directory: nexus-webshell
+        run: |
+          python3 -m http.server 4176 --bind 127.0.0.1 > /tmp/nexus-webshell.log 2>&1 &
+          echo $! > /tmp/nexus-webshell.pid
+          for attempt in {1..30}; do
+            curl --fail --silent http://127.0.0.1:4176/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/nexus-webshell.log
+          exit 1
+      - name: Run phone-sized behavior test
+        working-directory: nexus-webshell
+        run: npm run test:mobile
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f /tmp/nexus-webshell.pid ]; then kill "$(cat /tmp/nexus-webshell.pid)" || true; fi
