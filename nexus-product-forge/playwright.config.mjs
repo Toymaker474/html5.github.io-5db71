@@ -8,11 +8,12 @@ export default defineConfig({
   retries: 0,
   reporter: 'line',
   use: {
+    ...devices['iPhone 15 Pro Max'],
+    browserName: 'chromium',
     baseURL: 'http://127.0.0.1:4173',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    ...devices['iPhone 15 Pro Max'],
   },
   webServer: {
     command: 'python3 -m http.server 4173',
