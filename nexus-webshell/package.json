@@ -1,0 +1,14 @@
+{
+  "name": "nexus-webshell",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "check": "node --check app.js && node --check sw.js",
+    "test:mobile": "playwright test tests/mobile-smoke.spec.mjs --reporter=line"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.0"
+  }
+}
