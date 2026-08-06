@@ -17,7 +17,7 @@ const encodeString = value => {
 
 const section = (id, payload) => [id, ...encodeU32(payload.length), ...payload];
 
-export function buildNBodyKickWasmBinary() {
+function buildF64AxpyWasmBinary(exportName) {
   const typeSection = section(1, [
     ...encodeU32(1),
     0x60,
@@ -34,7 +34,7 @@ export function buildNBodyKickWasmBinary() {
   const functionSection = section(3, [...encodeU32(1), ...encodeU32(0)]);
   const exportSection = section(7, [
     ...encodeU32(1),
-    ...encodeString('nbodyKick'),
+    ...encodeString(exportName),
     0x00, ...encodeU32(0),
   ]);
   const instructions = [
@@ -75,42 +75,92 @@ export function buildNBodyKickWasmBinary() {
   ]);
 }
 
-export class NBodyKickWasmKernel {
-  static async create(arena) {
-    if (!arena?.memory || !(arena.memory instanceof WebAssembly.Memory)) throw new Error('NBODY_WASM_KERNEL_INVALID_ARENA');
-    const binary = buildNBodyKickWasmBinary();
-    if (!WebAssembly.validate(binary)) throw new Error('NBODY_WASM_KERNEL_BINARY_INVALID');
-    const { instance, module } = await WebAssembly.instantiate(binary, { env: { memory: arena.memory } });
-    return new NBodyKickWasmKernel({ arena, instance, module, byteLength: binary.byteLength });
-  }
+export function buildNBodyKickWasmBinary() {
+  return buildF64AxpyWasmBinary('nbodyKick');
+}
 
-  constructor({ arena, instance, module, byteLength }) {
+export function buildNBodyDriftWasmBinary() {
+  return buildF64AxpyWasmBinary('nbodyDrift');
+}
+
+class NBodyAxpyWasmKernel {
+  constructor({ arena, instance, module, byteLength, exportName, targetName, sourceName, schema, operation }) {
     this.arena = arena;
     this.instance = instance;
     this.module = module;
     this.byteLength = byteLength;
+    this.exportName = exportName;
+    this.targetName = targetName;
+    this.sourceName = sourceName;
+    this.schema = schema;
+    this.operation = operation;
   }
 
-  kick(dt, scalarCount = this.arena.view('velocity').length) {
+  apply(dt, scalarCount = this.arena.view(this.targetName).length) {
     if (!Number.isFinite(dt)) throw new Error('NBODY_WASM_KERNEL_INVALID_DT');
     if (!Number.isInteger(scalarCount) || scalarCount < 0) throw new Error('NBODY_WASM_KERNEL_INVALID_COUNT');
-    const velocity = this.arena.contract().arrays.velocity;
-    const acceleration = this.arena.contract().arrays.acceleration;
-    if (!velocity || !acceleration || velocity.scalar !== 'f64' || acceleration.scalar !== 'f64') throw new Error('NBODY_WASM_KERNEL_LAYOUT_MISMATCH');
-    if (scalarCount > velocity.elements || scalarCount > acceleration.elements) throw new Error('NBODY_WASM_KERNEL_RANGE');
-    this.instance.exports.nbodyKick(velocity.byteOffset, acceleration.byteOffset, scalarCount, dt);
-    return this.arena.view('velocity');
+    const layout = this.arena.contract().arrays;
+    const target = layout[this.targetName];
+    const source = layout[this.sourceName];
+    if (!target || !source || target.scalar !== 'f64' || source.scalar !== 'f64') throw new Error('NBODY_WASM_KERNEL_LAYOUT_MISMATCH');
+    if (scalarCount > target.elements || scalarCount > source.elements) throw new Error('NBODY_WASM_KERNEL_RANGE');
+    this.instance.exports[this.exportName](target.byteOffset, source.byteOffset, scalarCount, dt);
+    return this.arena.view(this.targetName);
   }
 
   contract() {
     return {
-      schema: 'nexus.flux.nbody-wasm-kernel.v1',
-      operation: 'velocity += acceleration * dt',
+      schema: this.schema,
+      operation: this.operation,
       scalar: 'f64',
       nativeKernelAttached: true,
       binaryBytes: this.byteLength,
       importedMemory: true,
       deterministic: true,
     };
+  }
+}
+
+async function instantiateKernel(arena, { binary, exportName, targetName, sourceName, schema, operation, KernelClass }) {
+  if (!arena?.memory || !(arena.memory instanceof WebAssembly.Memory)) throw new Error('NBODY_WASM_KERNEL_INVALID_ARENA');
+  if (!WebAssembly.validate(binary)) throw new Error('NBODY_WASM_KERNEL_BINARY_INVALID');
+  const { instance, module } = await WebAssembly.instantiate(binary, { env: { memory: arena.memory } });
+  if (!(instance.exports[exportName] instanceof Function)) throw new Error('NBODY_WASM_KERNEL_EXPORT_MISSING');
+  return new KernelClass({ arena, instance, module, byteLength: binary.byteLength, exportName, targetName, sourceName, schema, operation });
+}
+
+export class NBodyKickWasmKernel extends NBodyAxpyWasmKernel {
+  static async create(arena) {
+    return instantiateKernel(arena, {
+      binary: buildNBodyKickWasmBinary(),
+      exportName: 'nbodyKick',
+      targetName: 'velocity',
+      sourceName: 'acceleration',
+      schema: 'nexus.flux.nbody-wasm-kernel.v1',
+      operation: 'velocity += acceleration * dt',
+      KernelClass: NBodyKickWasmKernel,
+    });
+  }
+
+  kick(dt, scalarCount) {
+    return this.apply(dt, scalarCount ?? this.arena.view('velocity').length);
+  }
+}
+
+export class NBodyDriftWasmKernel extends NBodyAxpyWasmKernel {
+  static async create(arena) {
+    return instantiateKernel(arena, {
+      binary: buildNBodyDriftWasmBinary(),
+      exportName: 'nbodyDrift',
+      targetName: 'position',
+      sourceName: 'velocity',
+      schema: 'nexus.flux.nbody-wasm-drift-kernel.v1',
+      operation: 'position += velocity * dt',
+      KernelClass: NBodyDriftWasmKernel,
+    });
+  }
+
+  drift(dt, scalarCount) {
+    return this.apply(dt, scalarCount ?? this.arena.view('position').length);
   }
 }
